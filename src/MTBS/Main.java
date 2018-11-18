@@ -1,12 +1,11 @@
 package MTBS;
 
-import MTBS.Interface;
+import UI.*;
 
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new Interface();
+		new UI_Main();
 	}
-
 }
