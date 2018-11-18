@@ -1,16 +1,14 @@
 package UI;
 
-import java.awt.Graphics;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,47 +24,49 @@ public class Login extends JPanel {
 	JLabel la = new JLabel("No Mouse Event");
 	UI_Main ui;
 
-	public void paint(Graphics g) {
-		g.drawImage(img, 0, 0, null);
-	}
-
 	public Login(UI_Main ui) {
 		this.ui = ui;
 		// 레이아웃 설정
 		setLayout(null);
-
-		// 패널1
-		// 이미지 받아오기
-		try {
-			img = ImageIO.read(new File("Resource/login.jpg"));
-		} catch (IOException e) {
-			System.out.println("이미지 불러오기 실패");
-			System.exit(0);
-		}
+		
+		JLabel lblNewLabel = new JLabel(""); 
+	    lblNewLabel.setIcon(new ImageIcon("Resource/login.png")); 
+	    lblNewLabel.setBounds(0, 0, 1024, 768);
+		
 		////////////////////////////////////////////////////////////////////////// 좌표볼려구
 
 		addMouseListener(new MyMouseListener());
 		addMouseMotionListener(new MyMouseListener());
 		la.setBounds(0, 0, 200, 30);
-		add(la);
+		la.setForeground(Color.WHITE);
 
 		////////////////////////////////////////////////////////////////////////////
 
-		// 로그인 필드
-		loginTextField = new JTextField(10);
-		loginTextField.setBounds(460, 310, 300, 40);
-		add(loginTextField);
-
-		// 패스워드
+		// 아이디 필드
+		loginTextField = new JTextField(10);	
+		loginTextField.setBounds(435, 260, 400, 60);
+		loginTextField.setOpaque(false);		
+		loginTextField.setForeground(Color.WHITE);
+		loginTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		// 패스워드 필드
 		passwordField = new JPasswordField(10);
-		passwordField.setBounds(460, 420, 300, 40);
-		add(passwordField);
-
+		passwordField.setBounds(435, 415, 400, 60);
+		passwordField.setOpaque(false);		
+		passwordField.setForeground(Color.WHITE);
+		passwordField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		// 로그인버튼 추가
 		bt = new JButton("로그인");
-		bt.setBounds(430, 528, 150, 40);
+		bt.setBackground(new Color(114, 137, 218));
+		bt.setForeground(Color.WHITE);
+		bt.setBounds(435, 500, 400, 60);
+		bt.setBorderPainted(false);
+		bt.setFocusPainted(false);		
+		
+		add(loginTextField);
+		add(la);
+		add(passwordField);
 		add(bt);
-
+		add(lblNewLabel);
 		bt.addActionListener(new MyActionListener());
 	}
 
@@ -74,7 +74,7 @@ public class Login extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("aa");
-			// ui.update_UI("Main_Menu");
+			ui.update_UI("Main_Menu");
 		}
 	}
 

@@ -10,15 +10,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class UI_Main extends JFrame {
+	Login Login = new Login(this);
+	Main_Menu Main_Menu = new Main_Menu(this);
 	final static int width = 1024;
 	final static int height = 768;
-	public Login Login = null;
-	public Main_Menu Main_Menu = null;
 
 	public UI_Main() {
 		setTitle("로그인 테스트");
 		// 닫기 버튼 시 종료
-		Login = new Login(this);
 		add(Login);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -39,5 +38,4 @@ public class UI_Main extends JFrame {
 			repaint();
 		}
 	}
-
 }
