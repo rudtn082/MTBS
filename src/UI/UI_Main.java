@@ -16,7 +16,7 @@ public class UI_Main extends JFrame {
 	final static int height = 768;
 
 	public UI_Main() {
-		setTitle("로그인 테스트");
+		setTitle("영화 예약 시스템");
 		// 닫기 버튼 시 종료
 		add(Login);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
