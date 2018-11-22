@@ -13,7 +13,7 @@ public class UI_Main extends JFrame {
 	Login Login = new Login(this);
 	Main_Menu Main_Menu = new Main_Menu(this);
 	final static int width = 1024;
-	final static int height = 768;
+	final static int height = 800;
 
 	public UI_Main() {
 		setTitle("영화 예약 시스템");

@@ -15,6 +15,10 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import People.Admin;
+import People.member;
+import People.memberDAO;
+
 public class Login extends JPanel {
 	JTextField loginTextField;
 	JPasswordField passwordField;
@@ -28,11 +32,11 @@ public class Login extends JPanel {
 		this.ui = ui;
 		// 레이아웃 설정
 		setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel(""); 
-	    lblNewLabel.setIcon(new ImageIcon("Resource/login.png")); 
-	    lblNewLabel.setBounds(0, 0, 1024, 768);
-		
+
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon("Resource/login.png"));
+		lblNewLabel.setBounds(0, 0, 1024, 768);
+
 		////////////////////////////////////////////////////////////////////////// 좌표볼려구
 
 		addMouseListener(new MyMouseListener());
@@ -43,25 +47,27 @@ public class Login extends JPanel {
 		////////////////////////////////////////////////////////////////////////////
 
 		// 아이디 필드
-		loginTextField = new JTextField(10);	
+		loginTextField = new JTextField(10);
 		loginTextField.setBounds(435, 260, 400, 60);
-		loginTextField.setOpaque(false);		
+		loginTextField.setOpaque(false);
 		loginTextField.setForeground(Color.WHITE);
 		loginTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		loginTextField.setCaretColor(Color.white);
 		// 패스워드 필드
 		passwordField = new JPasswordField(10);
 		passwordField.setBounds(435, 415, 400, 60);
-		passwordField.setOpaque(false);		
+		passwordField.setOpaque(false);
 		passwordField.setForeground(Color.WHITE);
 		passwordField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		passwordField.setCaretColor(Color.white);
 		// 로그인버튼 추가
 		bt = new JButton("로그인");
 		bt.setBackground(new Color(114, 137, 218));
 		bt.setForeground(Color.WHITE);
 		bt.setBounds(435, 500, 400, 60);
 		bt.setBorderPainted(false);
-		bt.setFocusPainted(false);		
-		
+		bt.setFocusPainted(false);
+
 		add(loginTextField);
 		add(la);
 		add(passwordField);
@@ -73,8 +79,18 @@ public class Login extends JPanel {
 	class MyActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("aa");
-			ui.update_UI("Main_Menu");
+			Admin admin = new Admin();
+			member member = new member();
+			// admin입력했을 때
+			if (loginTextField.getText().equals(admin.getID())) {
+				if (String.valueOf(passwordField.getPassword()).equals(admin.getPW())) {
+					ui.update_UI("Main_Menu_admin");
+				}
+			}
+			// 회원이 입력했을 때
+			else {
+				memberDAO memberDAO = new memberDAO();
+			}
 		}
 	}
 
