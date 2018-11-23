@@ -4,11 +4,11 @@ public class member {
 	private String mID;
 	private String mPW;
 	private String mName;
-	private int mDOB;
+	private String mDOB;
 	private String mAddress;
-	private int mPN;
-	private int mticket;
-	private int mVIP;
+	private String mPN;
+	private String mticket;
+	private String mVIP;
 	
 	public String getmID() {
 		return mID;
@@ -28,10 +28,10 @@ public class member {
 	public void setmName(String mName) {
 		this.mName = mName;
 	}
-	public int getmDOB() {
+	public String getmDOB() {
 		return mDOB;
 	}
-	public void setmDOB(int mDOB) {
+	public void setmDOB(String mDOB) {
 		this.mDOB = mDOB;
 	}
 	public String getmAddress() {
@@ -40,22 +40,22 @@ public class member {
 	public void setmAddress(String mAddress) {
 		this.mAddress = mAddress;
 	}
-	public int getmPN() {
+	public String getmPN() {
 		return mPN;
 	}
-	public void setmPN(int mPN) {
+	public void setmPN(String mPN) {
 		this.mPN = mPN;
 	}
-	public int getmticket() {
+	public String getmticket() {
 		return mticket;
 	}
-	public void setmticket(int mticket) {
+	public void setmticket(String mticket) {
 		this.mticket = mticket;
 	}
-	public int getmVIP() {
+	public String getmVIP() {
 		return mVIP;
 	}
-	public void setmVIP(int mVIP) {
+	public void setmVIP(String mVIP) {
 		this.mVIP = mVIP;
 	}
 

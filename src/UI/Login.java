@@ -11,19 +11,20 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import People.Admin;
 import People.member;
-import People.memberDAO;
+import People.memberDB;
 
 public class Login extends JPanel {
 	JTextField loginTextField;
 	JPasswordField passwordField;
 	BufferedImage img = null;
-	JButton bt;
+	JButton bt, join;
 	JLabel Id, passwd;
 	JLabel la = new JLabel("No Mouse Event");
 	UI_Main ui;
@@ -36,15 +37,6 @@ public class Login extends JPanel {
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon("Resource/login.png"));
 		lblNewLabel.setBounds(0, 0, 1024, 768);
-
-		////////////////////////////////////////////////////////////////////////// 좌표볼려구
-
-		addMouseListener(new MyMouseListener());
-		addMouseMotionListener(new MyMouseListener());
-		la.setBounds(0, 0, 200, 30);
-		la.setForeground(Color.WHITE);
-
-		////////////////////////////////////////////////////////////////////////////
 
 		// 아이디 필드
 		loginTextField = new JTextField(10);
@@ -60,6 +52,7 @@ public class Login extends JPanel {
 		passwordField.setForeground(Color.WHITE);
 		passwordField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		passwordField.setCaretColor(Color.white);
+
 		// 로그인버튼 추가
 		bt = new JButton("로그인");
 		bt.setBackground(new Color(114, 137, 218));
@@ -68,66 +61,58 @@ public class Login extends JPanel {
 		bt.setBorderPainted(false);
 		bt.setFocusPainted(false);
 
+		// 가입버튼 추가
+		join = new JButton(" ");
+		join.setBounds(435, 590, 150, 25);
+		join.setContentAreaFilled(false);
+		join.setBorderPainted(false);
+		join.setFocusPainted(false);
+
 		add(loginTextField);
-		add(la);
 		add(passwordField);
 		add(bt);
+		add(join);
 		add(lblNewLabel);
+		join.addActionListener(new MyActionListener());
 		bt.addActionListener(new MyActionListener());
 	}
 
 	class MyActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Admin admin = new Admin();
-			member member = new member();
-			// admin입력했을 때
-			if (loginTextField.getText().equals(admin.getID())) {
-				if (String.valueOf(passwordField.getPassword()).equals(admin.getPW())) {
-					ui.update_UI("Main_Menu_admin");
+			switch (e.getActionCommand()) {
+			case "로그인":
+				Admin admin = new Admin();
+				// admin입력했을 때
+				if (loginTextField.getText().equals(admin.getID())) {
+					if (String.valueOf(passwordField.getPassword()).equals(admin.getPW())) {
+						ui.update_UI("Main_Menu_admin");
+						break;
+					}
 				}
+				// 회원이 입력했을 때
+				else {
+					try {
+						memberDB memberDB = new memberDB();
+						member member = memberDB.getMemberDTO(loginTextField.getText());
+						String pw = member.getmPW();
+						if (pw.equals(passwordField.getText())) {
+							ui.setmember(member);
+							ui.update_UI("Main_Menu");
+							break;
+						}
+					} catch (Exception e1) {
+						System.out.println(e1.toString());
+						JOptionPane.showMessageDialog(null, "로그인에 실패하였습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+						break;
+					}
+					JOptionPane.showMessageDialog(null, "아이디, 패스워드를 확인 해주세요.", "메세지", JOptionPane.WARNING_MESSAGE);
+				}
+				break;
+			case " ":
+				ui.update_UI("Join_UI");
+				break;
 			}
-			// 회원이 입력했을 때
-			else {
-				memberDAO memberDAO = new memberDAO();
-			}
 		}
-	}
-
-	class MyMouseListener implements MouseListener, MouseMotionListener {
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			la.setText("MouseClicked(" + e.getX() + "," + e.getY() + ")");
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			la.setText("MousePressed(" + e.getX() + "," + e.getY() + ")");
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			la.setText("MouseReleased(" + e.getX() + "," + e.getY() + ")");
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-		}
-
-		@Override
-		public void mouseDragged(MouseEvent e) {
-			la.setText("MouseDragged(" + e.getX() + "," + e.getY() + ")");
-		}
-
-		@Override
-		public void mouseMoved(MouseEvent e) {
-			la.setText("MouseMoved(" + e.getX() + "," + e.getY() + ")");
-		}
-
 	}
 }
