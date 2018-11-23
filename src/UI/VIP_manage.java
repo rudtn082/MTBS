@@ -6,28 +6,27 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import People.member;
 import People.memberDB;
 
-public class Main_Menu_admin extends JPanel {
+public class VIP_manage extends JPanel {
 	JButton movie_manage, cinema_manage, VIP_manage, ticket_manage;
 	UI_Main ui;
 	JLabel la = new JLabel("No Mouse Event"), sID;
 
-	public Main_Menu_admin(UI_Main ui) {
+	public VIP_manage(UI_Main ui) {
 		this.ui = ui;
 		// 레이아웃 설정
 		setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("Resource/main_menu.png"));
+		lblNewLabel.setIcon(new ImageIcon("Resource/VIP_manage.png"));
 		lblNewLabel.setBounds(0, 0, 1024, 768);
 
 		////////////////////////////////////////////////////////////////////////// 좌표볼려구
@@ -77,6 +76,14 @@ public class Main_Menu_admin extends JPanel {
 		cinema_manage.addActionListener(new MyActionListener());
 		VIP_manage.addActionListener(new MyActionListener());
 		ticket_manage.addActionListener(new MyActionListener());
+		
+		try {
+			memberDB memberDB = new memberDB();
+			ArrayList data = memberDB.getMemberList();
+			System.out.println(data);
+		} catch(Exception e) {
+			System.out.println(e.toString());
+		}
 	}
 
 	class MyActionListener implements ActionListener {

@@ -5,11 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
-
-import UI.Login;
 
 public class memberDB {
 	public memberDB() {
@@ -67,10 +66,10 @@ public class memberDB {
 	}
 
 	// 멤버리스트 출력
-	public Vector getMemberList() {
+	public ArrayList getMemberList() {
 
-		Vector data = new Vector(); // Jtable에 값을 쉽게 넣는 방법 1. 2차원배열 2. Vector 에 vector추가
-
+		ArrayList<ArrayList> data = new ArrayList<ArrayList>(); // Jtable에 값을 쉽게 넣는 방법 1. 2차원배열 2. Vector 에 vector추가
+		
 		Connection con = null; // 연결
 		PreparedStatement ps = null; // 명령
 		ResultSet rs = null; // 결과
@@ -91,17 +90,17 @@ public class memberDB {
 				String mticket = rs.getString("ticket");
 				String mVIP = rs.getString("VIP");
 
-				Vector row = new Vector();
-				row.add(mID);
-				row.add(mPW);
-				row.add(mName);
-				row.add(mDOB);
-				row.add(mAddress);
-				row.add(mPN);
-				row.add(mticket);
-				row.add(mVIP);
+				ArrayList<String> array = new ArrayList<String>();
+				array.add(mID);
+				array.add(mPW);
+				array.add(mName);
+				array.add(mDOB);
+				array.add(mAddress);
+				array.add(mPN);
+				array.add(mticket);
+				array.add(mVIP);
 
-				data.add(row);
+				data.add(array);
 			} // while
 		} catch (Exception e) {
 			e.printStackTrace();

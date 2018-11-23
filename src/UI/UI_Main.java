@@ -31,6 +31,7 @@ public class UI_Main extends JFrame {
 		Main_Menu Main_Menu = new Main_Menu(this);
 		Join_UI Join_UI = new Join_UI(this);
 		Main_Menu_admin Main_Menu_admin = new Main_Menu_admin(this);
+		VIP_manage VIP_manage = new VIP_manage(this);
 		if (panelName.equals("Login")) {
 			getContentPane().removeAll();
 			getContentPane().add(Login);
@@ -49,6 +50,11 @@ public class UI_Main extends JFrame {
 		} else if (panelName.equals("Main_Menu_admin")) {
 			getContentPane().removeAll();
 			getContentPane().add(Main_Menu_admin);
+			revalidate();
+			repaint();
+		} else if (panelName.equals("VIP_manage")) {
+			getContentPane().removeAll();
+			getContentPane().add(VIP_manage);
 			revalidate();
 			repaint();
 		}
