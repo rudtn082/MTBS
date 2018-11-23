@@ -84,7 +84,7 @@ public class Main_Menu_admin extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			switch(e.getActionCommand()) {
 			case "영화 관리":
-				System.out.println("영화 관리 버튼");
+				ui.update_UI("movie_manage");
 				break;
 			case "영화관 관리":
 				System.out.println("영화관 관리 버튼");
