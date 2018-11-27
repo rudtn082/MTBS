@@ -87,7 +87,7 @@ public class Main_Menu_admin extends JPanel {
 				ui.update_UI("movie_manage");
 				break;
 			case "康拳包 包府":
-				System.out.println("康拳包 包府 滚瓢");
+				ui.update_UI("cinema_manage");
 				break;
 			case "VIP绊按 包府":
 				ui.update_UI("VIP_manage");

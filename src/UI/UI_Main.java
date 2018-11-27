@@ -1,13 +1,6 @@
 package UI;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import People.member;
 
@@ -34,41 +27,70 @@ public class UI_Main extends JFrame {
 		VIP_manage VIP_manage = new VIP_manage(this);
 		movie_info_UI movie_info_UI = new movie_info_UI(this);
 		movie_manage movie_manage = new movie_manage(this);
-		if (panelName.equals("Login")) {
+		cinema_manage cinema_manage = new cinema_manage(this);
+		movie_search movie_search = new movie_search(this);
+		movie_reservation movie_reservation = new movie_reservation(this);
+		switch(panelName) {
+		case "Login":
 			getContentPane().removeAll();
 			getContentPane().add(Login);
 			revalidate();
 			repaint();
-		} else if (panelName.equals("Join_UI")) {
+			break;
+		case "Join_UI":
 			getContentPane().removeAll();
 			getContentPane().add(Join_UI);
 			revalidate();
 			repaint();
-		} else if (panelName.equals("Main_Menu")) {
+			break;
+		case "Main_Menu":
 			getContentPane().removeAll();
 			getContentPane().add(Main_Menu);
 			revalidate();
 			repaint();
-		} else if (panelName.equals("Main_Menu_admin")) {
+			break;
+		case "Main_Menu_admin":
 			getContentPane().removeAll();
 			getContentPane().add(Main_Menu_admin);
 			revalidate();
 			repaint();
-		} else if (panelName.equals("VIP_manage")) {
+			break;
+		case "VIP_manage":
 			getContentPane().removeAll();
 			getContentPane().add(VIP_manage);
 			revalidate();
 			repaint();
-		} else if (panelName.equals("movie_manage")) {
+			break;
+		case "movie_manage":
 			getContentPane().removeAll();
 			getContentPane().add(movie_manage);
 			revalidate();
 			repaint();
-		} else if (panelName.equals("movie_info_UI")) {
+			break;
+		case "movie_info_UI":
 			getContentPane().removeAll();
 			getContentPane().add(movie_info_UI);
 			revalidate();
 			repaint();
+			break;
+		case "cinema_manage":
+			getContentPane().removeAll();
+			getContentPane().add(cinema_manage);
+			revalidate();
+			repaint();
+			break;
+		case "movie_search":
+			getContentPane().removeAll();
+			getContentPane().add(movie_search);
+			revalidate();
+			repaint();
+			break;
+		case "movie_reservation":
+			getContentPane().removeAll();
+			getContentPane().add(movie_reservation);
+			revalidate();
+			repaint();
+			break;
 		}
 	}
 	

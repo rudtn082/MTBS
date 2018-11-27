@@ -3,9 +3,6 @@ package UI;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -16,17 +13,17 @@ import javax.swing.JPanel;
 import People.member;
 import People.memberDB;
 
-public class Main_Menu extends JPanel {
+public class movie_reservation extends JPanel {
 	JButton movie_search, movie_reserv, logout, dropout;
 	UI_Main ui;
 
-	public Main_Menu(UI_Main ui) {
+	public movie_reservation(UI_Main ui) {
 		this.ui = ui;
 		// 레이아웃 설정
 		setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("Resource/main_menu.png"));
+		lblNewLabel.setIcon(new ImageIcon("Resource/movie_reservation.png"));
 		lblNewLabel.setBounds(0, 0, 1024, 768);
 
 		// 영화 검색 버튼 추가
@@ -100,4 +97,5 @@ public class Main_Menu extends JPanel {
 			}
 		}
 	}
+
 }
