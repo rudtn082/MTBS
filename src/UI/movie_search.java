@@ -12,9 +12,10 @@ import javax.swing.JPanel;
 
 import People.member;
 import People.memberDB;
+import UI.cinema_manage.MyActionListener;
 
 public class movie_search extends JPanel {
-	JButton movie_search, movie_reserv, logout, dropout;
+	JButton movie_search, movie_reserv, logout, dropout, back;
 	JLabel mov1, mov2, mov3, mov4, mov5, mov6, mov7, mov8, mov9, mov10;
 	UI_Main ui;
 
@@ -92,7 +93,13 @@ public class movie_search extends JPanel {
 		dropout.setFocusPainted(false);
 		dropout.setForeground(Color.WHITE);
 		dropout.setBounds(770, 23, 200, 55);
-		
+
+		// 돌아가기 버튼 추가
+		back = new JButton("돌아가기");
+		back.setContentAreaFilled(false);
+		back.setFocusPainted(false);
+		back.setForeground(Color.WHITE);
+		back.setBounds(770, 23, 200, 55);
 
 		add(mov1);
 		add(mov2);
@@ -107,11 +114,13 @@ public class movie_search extends JPanel {
 		add(movie_reserv);
 		add(logout);
 		add(dropout);
+		add(back);
 		add(lblNewLabel);
 		movie_search.addActionListener(new MyActionListener());
 		movie_reserv.addActionListener(new MyActionListener());
 		logout.addActionListener(new MyActionListener());
 		dropout.addActionListener(new MyActionListener());
+		back.addActionListener(new MyActionListener());
 	}
 
 	class MyActionListener implements ActionListener {
@@ -142,6 +151,9 @@ public class movie_search extends JPanel {
 					JOptionPane.showMessageDialog(null, "탈퇴를 실패했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
 					break;
 				}
+			case "돌아가기":
+				ui.update_UI("Main_Menu");
+				break;
 			}
 		}
 	}
