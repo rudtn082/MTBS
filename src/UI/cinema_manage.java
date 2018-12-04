@@ -19,7 +19,7 @@ public class cinema_manage extends JPanel {
 		setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("Resource/movie_manage.png"));
+		lblNewLabel.setIcon(new ImageIcon("Resource/cinema_manage.png"));
 		lblNewLabel.setBounds(0, 0, 1024, 768);
 		
 		// 영화관 정보 등록 버튼 추가
@@ -66,13 +66,13 @@ public class cinema_manage extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			switch(e.getActionCommand()) {
 			case "영화관 정보 등록":
-				System.out.println("영화관 등록 버튼");
+				ui.update_UI("cinema_add");
 				break;
 			case "영화관 수정":
-				System.out.println("영화관 수정 버튼");
+				ui.update_UI("cinema_change");
 				break;
 			case "영화관 삭제":
-				System.out.println("영화관 삭제 버튼");
+				ui.update_UI("cinema_delete");
 				break;
 			case "돌아가기":
 				ui.update_UI("Main_Menu_admin");

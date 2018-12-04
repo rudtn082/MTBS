@@ -85,12 +85,14 @@ public class Main_Menu extends JPanel {
 				break;
 			case "È¸¿øÅ»Åð":
 				try {
-					JOptionPane.showMessageDialog(null, "Å»Åð ÇÏ½Ã°Ú½À´Ï±î?", "¸Þ¼¼Áö", JOptionPane.WARNING_MESSAGE);
-					member member = ui.getmember();
-					memberDB memberDB = new memberDB();
-					memberDB.deleteMember(member.getmID(), member.getmPW());
-					JOptionPane.showMessageDialog(null, "Å»Åð ¼º°ø!", "¸Þ¼¼Áö", JOptionPane.INFORMATION_MESSAGE);
-					ui.update_UI("Login");
+					int result = JOptionPane.showConfirmDialog(null, "Å»Åð ÇÏ½Ã°Ú½À´Ï±î?", "¸Þ¼¼Áö", JOptionPane.WARNING_MESSAGE);
+					if(result == JOptionPane.YES_OPTION) {
+						member member = ui.getmember();
+						memberDB memberDB = new memberDB();
+						memberDB.deleteMember(member.getmID(), member.getmPW());
+						JOptionPane.showMessageDialog(null, "Å»Åð ¼º°ø!", "¸Þ¼¼Áö", JOptionPane.INFORMATION_MESSAGE);
+						ui.update_UI("Login");
+					}
 					break;
 				} catch(Exception e1) {
 					System.out.println(e1.toString());

@@ -11,25 +11,25 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import Movie.*;
+import UI.movie_change.MyActionListener;
 
-public class movie_info_UI extends JPanel {
+public class cinema_change extends JPanel {
 	JTextField mvID, mvMovieTitle, mvDirector, mvActor, mvGrade, mvInfo;
 	UI_Main ui;
 	JButton ok, cancel;
 
-	public movie_info_UI(UI_Main ui) {
+	public cinema_change(UI_Main ui) {
 		this.ui = ui;
 		// 레이아웃 설정
 		setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("Resource/movie_info.png"));
+		lblNewLabel.setIcon(new ImageIcon("Resource/cinena_change.png"));
 		lblNewLabel.setBounds(0, 0, 1024, 768);
 
 		// 영화 아이디 필드
 		mvID = new JTextField(20);
-		mvID.setBounds(360, 198, 470, 55);
+		mvID.setBounds(455, 182, 470, 55);
 		mvID.setOpaque(false);
 		mvID.setForeground(Color.WHITE);
 		mvID.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -37,7 +37,7 @@ public class movie_info_UI extends JPanel {
 
 		// 영화 제목 필드
 		mvMovieTitle = new JTextField(20);
-		mvMovieTitle.setBounds(360, 275, 470, 55);
+		mvMovieTitle.setBounds(360, 255, 470, 55);
 		mvMovieTitle.setOpaque(false);
 		mvMovieTitle.setForeground(Color.WHITE);
 		mvMovieTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -46,7 +46,7 @@ public class movie_info_UI extends JPanel {
 		// 감독 필드
 		mvDirector = new JTextField(20);
 		mvDirector.setOpaque(false);
-		mvDirector.setBounds(360, 349, 470, 55);
+		mvDirector.setBounds(360, 329, 470, 55);
 		mvDirector.setForeground(Color.WHITE);
 		mvDirector.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		mvDirector.setCaretColor(Color.white);
@@ -54,7 +54,7 @@ public class movie_info_UI extends JPanel {
 		// 출연 필드
 		mvActor = new JTextField(30);
 		mvActor.setOpaque(false);
-		mvActor.setBounds(360, 425, 470, 55);
+		mvActor.setBounds(360, 405, 470, 55);
 		mvActor.setForeground(Color.WHITE);
 		mvActor.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		mvActor.setCaretColor(Color.white);
@@ -62,7 +62,7 @@ public class movie_info_UI extends JPanel {
 		// 등급 필드
 		mvGrade = new JTextField(10);
 		mvGrade.setOpaque(false);
-		mvGrade.setBounds(360, 499, 470, 55);
+		mvGrade.setBounds(360, 479, 470, 55);
 		mvGrade.setForeground(Color.WHITE);
 		mvGrade.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		mvGrade.setCaretColor(Color.white);
@@ -70,13 +70,14 @@ public class movie_info_UI extends JPanel {
 		// 주요정보 필드
 		mvInfo = new JTextField(30);
 		mvInfo.setOpaque(false);
-		mvInfo.setBounds(360, 573, 470, 55);
+		mvInfo.setBounds(360, 553, 470, 55);
 		mvInfo.setForeground(Color.WHITE);
 		mvInfo.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		mvInfo.setCaretColor(Color.white);
 		
-		// 저장버튼 추가
-		ok = new JButton("저장");
+
+		// 수정버튼 추가
+		ok = new JButton("수정");
 		ok.setBackground(new Color(114, 137, 218));
 		ok.setForeground(Color.WHITE);
 		ok.setBounds(105, 647, 350, 60);
@@ -114,7 +115,7 @@ public class movie_info_UI extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			switch (e.getActionCommand()) {
-			case "저장":
+			case "수정":
 				// 영화 아이디 예외처리
 				if (mvID.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "영화 아이디를 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
@@ -181,31 +182,31 @@ public class movie_info_UI extends JPanel {
 					}
 				}
 				
-				try {
-					movie new_movie = new movie();
-					new_movie.setMvID(mvID.getText());
-					new_movie.setMvMovieTitle(mvMovieTitle.getText());
-					new_movie.setMvDirector(mvDirector.getText());
-					new_movie.setMvActor(mvActor.getText());
-					new_movie.setMvGrade(mvGrade.getText());
-					new_movie.setMvInfo(mvInfo.getText());
-
-					movieDB movieDB = new movieDB();
-					movieDB.getConn();
-					boolean torf = movieDB.insertMovie(new_movie);
-					if(torf)
-						JOptionPane.showMessageDialog(null, "영화가 등록 되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
-					else
-						JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
-						
-				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
-					System.out.println(e1.toString());
-				}
-				ui.update_UI("movie_manage");
+//				try {
+//					movie new_movie = new movie();
+//					new_movie.setMvID(mvID.getText());
+//					new_movie.setMvMovieTitle(mvMovieTitle.getText());
+//					new_movie.setMvDirector(mvDirector.getText());
+//					new_movie.setMvActor(mvActor.getText());
+//					new_movie.setMvGrade(mvGrade.getText());
+//					new_movie.setMvInfo(mvInfo.getText());
+//
+//					movieDB movieDB = new movieDB();
+//					movieDB.getConn();
+//					boolean torf = movieDB.insertMovie(new_movie);
+//					if(torf)
+//						JOptionPane.showMessageDialog(null, "영화가 등록 되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
+//					else
+//						JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+//						
+//				} catch (Exception e1) {
+//					JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+//					System.out.println(e1.toString());
+//				}
+				ui.update_UI("cinema_manage");
 				break;
 			case "취소":
-				ui.update_UI("movie_manage");
+				ui.update_UI("cinema_manage");
 				break;
 			}
 		}
@@ -219,4 +220,6 @@ public class movie_info_UI extends JPanel {
 			}
 		}
 	}
+
+
 }

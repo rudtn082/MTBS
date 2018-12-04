@@ -30,6 +30,11 @@ public class UI_Main extends JFrame {
 		cinema_manage cinema_manage = new cinema_manage(this);
 		movie_search movie_search = new movie_search(this);
 		movie_reservation movie_reservation = new movie_reservation(this);
+		movie_delete movie_delete = new movie_delete(this);
+		movie_change movie_change = new movie_change(this);
+		cinema_delete cinema_delete = new cinema_delete(this);
+		cinema_change cinema_change = new cinema_change(this);
+		cinema_add cinema_add = new cinema_add(this);
 		switch(panelName) {
 		case "Login":
 			getContentPane().removeAll();
@@ -88,6 +93,36 @@ public class UI_Main extends JFrame {
 		case "movie_reservation":
 			getContentPane().removeAll();
 			getContentPane().add(movie_reservation);
+			revalidate();
+			repaint();
+			break;
+		case "movie_delete":
+			getContentPane().removeAll();
+			getContentPane().add(movie_delete);
+			revalidate();
+			repaint();
+			break;
+		case "movie_change":
+			getContentPane().removeAll();
+			getContentPane().add(movie_change);
+			revalidate();
+			repaint();
+			break;
+		case "cinema_delete":
+			getContentPane().removeAll();
+			getContentPane().add(cinema_delete);
+			revalidate();
+			repaint();
+			break;
+		case "cinema_change":
+			getContentPane().removeAll();
+			getContentPane().add(cinema_add);
+			revalidate();
+			repaint();
+			break;
+		case "cinema_add":
+			getContentPane().removeAll();
+			getContentPane().add(cinema_add);
 			revalidate();
 			repaint();
 			break;

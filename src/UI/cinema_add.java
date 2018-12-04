@@ -11,20 +11,22 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import Movie.*;
+import Movie.movie;
+import Movie.movieDB;
+import UI.movie_info_UI.MyActionListener;
 
-public class movie_info_UI extends JPanel {
+public class cinema_add extends JPanel {
 	JTextField mvID, mvMovieTitle, mvDirector, mvActor, mvGrade, mvInfo;
 	UI_Main ui;
 	JButton ok, cancel;
 
-	public movie_info_UI(UI_Main ui) {
+	public cinema_add(UI_Main ui) {
 		this.ui = ui;
 		// 레이아웃 설정
 		setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("Resource/movie_info.png"));
+		lblNewLabel.setIcon(new ImageIcon("Resource/cinema_add.png"));
 		lblNewLabel.setBounds(0, 0, 1024, 768);
 
 		// 영화 아이디 필드
@@ -202,10 +204,10 @@ public class movie_info_UI extends JPanel {
 					JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
 					System.out.println(e1.toString());
 				}
-				ui.update_UI("movie_manage");
+				ui.update_UI("cinema_manage");
 				break;
 			case "취소":
-				ui.update_UI("movie_manage");
+				ui.update_UI("cinema_manage");
 				break;
 			}
 		}
@@ -219,4 +221,5 @@ public class movie_info_UI extends JPanel {
 			}
 		}
 	}
+
 }

@@ -3,9 +3,10 @@ package UI;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -16,9 +17,9 @@ import javax.swing.JPanel;
 import People.memberDB;
 
 public class VIP_manage extends JPanel {
-	JButton movie_manage, cinema_manage, VIP_manage, ticket_manage;
+	JButton movie_manage, cinema_manage, VIP_manage, ticket_manage, re;
 	UI_Main ui;
-	JLabel la = new JLabel("No Mouse Event"), sID;
+	JLabel sID;
 
 	public VIP_manage(UI_Main ui) {
 		this.ui = ui;
@@ -29,14 +30,44 @@ public class VIP_manage extends JPanel {
 		lblNewLabel.setIcon(new ImageIcon("Resource/VIP_manage.png"));
 		lblNewLabel.setBounds(0, 0, 1024, 768);
 
-		////////////////////////////////////////////////////////////////////////// 좌표볼려구
+		ArrayList<ArrayList> vipMember = new ArrayList<>();
+		VIP_take VIP_take = new VIP_take();
+		vipMember = VIP_take.getVIPList();
 
-		addMouseListener(new MyMouseListener());
-		addMouseMotionListener(new MyMouseListener());
-		la.setBounds(0, 0, 200, 30);
-		la.setForeground(Color.WHITE);
+		String[][] a = new String[vipMember.size()][3];
+		for (int i = 0; i < a.length; i++) {
+			for (int j = 0; j < a[i].length; j++) {
+				a[i][j] = new String();
+			}
+		}
 
-		////////////////////////////////////////////////////////////////////////////
+		for (int i = 0; i < a.length; i++) {
+			for (int j = 0; j < a[i].length; j++) {
+				a[i][j] = (String) vipMember.get(i).get(j);
+			}
+		}
+
+		// row
+		JLabel[] row = new JLabel[vipMember.size()];
+		JLabel[] row2 = new JLabel[vipMember.size()];
+		JLabel[] row3 = new JLabel[vipMember.size()];
+		for (int i = 0; i < a.length; i++) {
+			int j = 0;
+			row[i] = new JLabel(a[i][j]);
+			row[i].setBounds(165, 198 + (i * 19), 470, 55);
+			row[i].setForeground(Color.WHITE);
+
+			row2[i] = new JLabel(a[i][j + 1]);
+			row2[i].setBounds(450, 198 + (i * 19), 470, 55);
+			row2[i].setForeground(Color.WHITE);
+
+			row3[i] = new JLabel(a[i][j + 2]);
+			row3[i].setBounds(800, 198 + (i * 19), 470, 55);
+			row3[i].setForeground(Color.WHITE);
+			add(row[i]);
+			add(row2[i]);
+			add(row3[i]);
+		}
 
 		// 영화 관리 버튼 추가
 		movie_manage = new JButton("영화 관리");
@@ -44,7 +75,7 @@ public class VIP_manage extends JPanel {
 		movie_manage.setFocusPainted(false);
 		movie_manage.setForeground(Color.WHITE);
 		movie_manage.setBounds(20, 23, 200, 55);
-		
+
 		// 영화관 관리 버튼 추가
 		cinema_manage = new JButton("영화관 관리");
 		cinema_manage.setContentAreaFilled(false);
@@ -58,30 +89,39 @@ public class VIP_manage extends JPanel {
 		VIP_manage.setFocusPainted(false);
 		VIP_manage.setForeground(Color.WHITE);
 		VIP_manage.setBounds(520, 23, 200, 55);
-		
+
 		// 영화 티켓 발행 버튼 추가
 		ticket_manage = new JButton("영화 티켓 발행");
 		ticket_manage.setContentAreaFilled(false);
 		ticket_manage.setFocusPainted(false);
 		ticket_manage.setForeground(Color.WHITE);
 		ticket_manage.setBounds(770, 23, 200, 55);
+		
+		// 돌아가기 버튼 추가
+		re = new JButton("돌아가기");
+		re.setBackground(new Color(114, 137, 218));
+		re.setForeground(Color.WHITE);
+		re.setBounds(307, 647, 350, 60);
+		re.setBorderPainted(false);
+		re.setFocusPainted(false);
 
 		add(movie_manage);
 		add(cinema_manage);
 		add(VIP_manage);
 		add(ticket_manage);
-		add(la);
+		add(re);
 		add(lblNewLabel);
 		movie_manage.addActionListener(new MyActionListener());
 		cinema_manage.addActionListener(new MyActionListener());
 		VIP_manage.addActionListener(new MyActionListener());
 		ticket_manage.addActionListener(new MyActionListener());
-		
+		re.addActionListener(new MyActionListener());
+
 		try {
 			memberDB memberDB = new memberDB();
 			ArrayList data = memberDB.getMemberList();
 			System.out.println(data);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
 	}
@@ -89,12 +129,12 @@ public class VIP_manage extends JPanel {
 	class MyActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			switch(e.getActionCommand()) {
+			switch (e.getActionCommand()) {
 			case "영화 관리":
-				System.out.println("영화 관리 버튼");
+				ui.update_UI("movie_manage");
 				break;
 			case "영화관 관리":
-				System.out.println("영화관 관리 버튼");
+				ui.update_UI("cinema_manage");
 				break;
 			case "VIP고객 관리":
 				ui.update_UI("VIP_manage");
@@ -102,45 +142,60 @@ public class VIP_manage extends JPanel {
 			case "영화 티켓 발행":
 				System.out.println("영화 티켓 발행 버튼");
 				break;
+			case "돌아가기":
+				ui.update_UI("Main_Menu_admin");
+				break;
 			}
 		}
 	}
 
-	class MyMouseListener implements MouseListener, MouseMotionListener {
+	public class VIP_take {
 
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			la.setText("MouseClicked(" + e.getX() + "," + e.getY() + ")");
+		public Connection getConn() {
+			Connection con = null;
+
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver"); // 1. 드라이버 로딩
+				con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/MTBS?serverTimezone=UTC&useSSL=false",
+						"MTBS", "mtbs"); // 2. 드라이버 연결
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			return con;
 		}
 
-		@Override
-		public void mousePressed(MouseEvent e) {
-			la.setText("MousePressed(" + e.getX() + "," + e.getY() + ")");
-		}
+		public ArrayList getVIPList() {
 
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			la.setText("MouseReleased(" + e.getX() + "," + e.getY() + ")");
-		}
+			ArrayList<ArrayList> data = new ArrayList<ArrayList>(); // Jtable에 값을 쉽게 넣는 방법 1. 2차원배열 2. Vector 에 vector추가
 
-		@Override
-		public void mouseEntered(MouseEvent e) {
-		}
+			Connection con = null; // 연결
+			PreparedStatement ps = null; // 명령
+			ResultSet rs = null; // 결과
 
-		@Override
-		public void mouseExited(MouseEvent e) {
-		}
+			try {
+				con = getConn();
+				String sql = "select ID, Name, ticket from member order by ticket desc LIMIT 10 ";
+				ps = con.prepareStatement(sql);
+				rs = ps.executeQuery();
 
-		@Override
-		public void mouseDragged(MouseEvent e) {
-			la.setText("MouseDragged(" + e.getX() + "," + e.getY() + ")");
-		}
+				while (rs.next()) {
+					String mID = rs.getString("ID");
+					String mName = rs.getString("Name");
+					String mticket = rs.getString("ticket");
 
-		@Override
-		public void mouseMoved(MouseEvent e) {
-			la.setText("MouseMoved(" + e.getX() + "," + e.getY() + ")");
-		}
+					ArrayList<String> array = new ArrayList<String>();
+					array.add(mID);
+					array.add(mName);
+					array.add(mticket);
 
+					data.add(array);
+				} // while
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return data;
+		}
 	}
-
 }

@@ -15,7 +15,7 @@ import People.memberDB;
 import UI.cinema_manage.MyActionListener;
 
 public class movie_search extends JPanel {
-	JButton movie_search, movie_reserv, logout, dropout, back;
+	JButton movie_search, movie_reserv, logout, dropout, re;
 	JLabel mov1, mov2, mov3, mov4, mov5, mov6, mov7, mov8, mov9, mov10;
 	UI_Main ui;
 
@@ -95,11 +95,12 @@ public class movie_search extends JPanel {
 		dropout.setBounds(770, 23, 200, 55);
 
 		// 돌아가기 버튼 추가
-		back = new JButton("돌아가기");
-		back.setContentAreaFilled(false);
-		back.setFocusPainted(false);
-		back.setForeground(Color.WHITE);
-		back.setBounds(770, 23, 200, 55);
+		re = new JButton("돌아가기");
+		re.setBackground(new Color(114, 137, 218));
+		re.setForeground(Color.WHITE);
+		re.setBounds(307, 647, 350, 60);
+		re.setBorderPainted(false);
+		re.setFocusPainted(false);
 
 		add(mov1);
 		add(mov2);
@@ -114,13 +115,13 @@ public class movie_search extends JPanel {
 		add(movie_reserv);
 		add(logout);
 		add(dropout);
-		add(back);
+		add(re);
 		add(lblNewLabel);
 		movie_search.addActionListener(new MyActionListener());
 		movie_reserv.addActionListener(new MyActionListener());
 		logout.addActionListener(new MyActionListener());
 		dropout.addActionListener(new MyActionListener());
-		back.addActionListener(new MyActionListener());
+		re.addActionListener(new MyActionListener());
 	}
 
 	class MyActionListener implements ActionListener {
@@ -139,12 +140,14 @@ public class movie_search extends JPanel {
 				break;
 			case "회원탈퇴":
 				try {
-					JOptionPane.showMessageDialog(null, "탈퇴 하시겠습니까?", "메세지", JOptionPane.WARNING_MESSAGE);
-					member member = ui.getmember();
-					memberDB memberDB = new memberDB();
-					memberDB.deleteMember(member.getmID(), member.getmPW());
-					JOptionPane.showMessageDialog(null, "탈퇴 성공!", "메세지", JOptionPane.INFORMATION_MESSAGE);
-					ui.update_UI("Login");
+					int result = JOptionPane.showConfirmDialog(null, "탈퇴 하시겠습니까?", "메세지", JOptionPane.WARNING_MESSAGE);
+					if(result == JOptionPane.YES_OPTION) {
+						member member = ui.getmember();
+						memberDB memberDB = new memberDB();
+						memberDB.deleteMember(member.getmID(), member.getmPW());
+						JOptionPane.showMessageDialog(null, "탈퇴 성공!", "메세지", JOptionPane.INFORMATION_MESSAGE);
+						ui.update_UI("Login");
+					}
 					break;
 				} catch(Exception e1) {
 					System.out.println(e1.toString());

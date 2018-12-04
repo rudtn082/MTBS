@@ -75,10 +75,10 @@ public class movie_manage extends JPanel {
 				ui.update_UI("movie_info_UI");
 				break;
 			case "영화 수정":
-				System.out.println("영화 수정 버튼");
+				ui.update_UI("movie_change");
 				break;
 			case "영화 삭제":
-				System.out.println("영화 삭제 버튼");
+				ui.update_UI("movie_delete");
 				break;
 			case "돌아가기":
 				ui.update_UI("Main_Menu_admin");
