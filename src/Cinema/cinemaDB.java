@@ -32,7 +32,7 @@ public class cinemaDB {
 		return con;
 	}
 
-	// 한사람의 회원 정보 가져오기
+	// 영화관 정보 가져오기
 	public cinema getCinemaDTO(String NAME) {
 
 		cinema cinema = new cinema();
@@ -61,7 +61,7 @@ public class cinemaDB {
 		return cinema;
 	}
 
-	// 멤버리스트 출력
+	// 영화관 리스트 출력
 	public Vector getCinemaList() {
 
 		Vector data = new Vector(); // Jtable에 값을 쉽게 넣는 방법 1. 2차원배열 2. Vector 에 vector추가
@@ -163,11 +163,10 @@ public class cinemaDB {
 
 		try {
 			con = getConn();
-			String sql = "delete from cinema where NAME=?";
+			String sql = "delete from cinema where Name=?";
 
 			ps = con.prepareStatement(sql);
 			ps.setString(1, name);
-			//ps.setString(2, pwd);
 			int r = ps.executeUpdate(); // 실행 -> 삭제
 
 			if (r > 0)

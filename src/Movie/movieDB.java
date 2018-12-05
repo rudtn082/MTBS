@@ -76,7 +76,7 @@ public class movieDB {
 
 		try {
 			con = getConn();
-			String sql = "select * from movie order by MovieTitle asc";
+			String sql = "select ID,TheaterID,MovieTitle,Director,Actor,Grade,Info,sum(AccumulateNum) as AccumulateNum from movie group by MovieTitle order by AccumulateNum desc";
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
 

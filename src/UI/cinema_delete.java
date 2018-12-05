@@ -11,10 +11,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import UI.movie_delete.MyActionListener;
+import Cinema.cinemaDB;
 
 public class cinema_delete extends JPanel {
-	JTextField mvID;
+	JTextField cinemaName;
 	UI_Main ui;
 	JButton ok, cancel;
 
@@ -27,13 +27,13 @@ public class cinema_delete extends JPanel {
 		lblNewLabel.setIcon(new ImageIcon("Resource/cinema_delete.png"));
 		lblNewLabel.setBounds(0, 0, 1024, 768);
 
-		// 영화관 아이디 필드
-		mvID = new JTextField(20);
-		mvID.setBounds(455, 325, 470, 55);
-		mvID.setOpaque(false);
-		mvID.setForeground(Color.WHITE);
-		mvID.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		mvID.setCaretColor(Color.white);
+		// 영화관 이름 필드
+		cinemaName = new JTextField(20);
+		cinemaName.setBounds(455, 325, 470, 55);
+		cinemaName.setOpaque(false);
+		cinemaName.setForeground(Color.WHITE);
+		cinemaName.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		cinemaName.setCaretColor(Color.white);
 
 		// 삭제버튼 추가
 		ok = new JButton("삭제");
@@ -51,11 +51,10 @@ public class cinema_delete extends JPanel {
 		cancel.setBorderPainted(false);
 		cancel.setFocusPainted(false);
 
-		add(mvID);
+		add(cinemaName);
 		add(cancel);
 		add(ok);
 		add(lblNewLabel);
-		mvID.addActionListener(new MyActionListener());
 		ok.addActionListener(new MyActionListener());
 		cancel.addActionListener(new MyActionListener());
 	}
@@ -66,32 +65,29 @@ public class cinema_delete extends JPanel {
 			switch (e.getActionCommand()) {
 			case "삭제":
 				// 영화 아이디 예외처리
-				if (mvID.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "영화 아이디를 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				if (cinemaName.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "영화관 이름을 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
 					break;
 				} else {
-					if (isStringDouble(mvID.getText()) != false) {
-						JOptionPane.showMessageDialog(null, "영화 아이디는 글자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+					if (isStringDouble(cinemaName.getText()) != false) {
+						JOptionPane.showMessageDialog(null, "영화관 이름은 글자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
 						break;
 					}
 				}
 				
-//				try {
-//					movie new_movie = new movie();
-//					new_movie.setMvID(mvID.getText());
-//
-//					movieDB movieDB = new movieDB();
-//					movieDB.getConn();
-//					boolean torf = movieDB.insertMovie(new_movie);
-//					if(torf)
-//						JOptionPane.showMessageDialog(null, "영화가 등록 되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
-//					else
-//						JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
-//						
-//				} catch (Exception e1) {
-//					JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
-//					System.out.println(e1.toString());
-//				}
+				try {
+				cinemaDB cinemaDB = new cinemaDB();
+				boolean torf = cinemaDB.deleteCinema(cinemaName.getText());
+
+				if(torf)
+					JOptionPane.showMessageDialog(null, "영화관이 삭제 되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
+				else
+					JOptionPane.showMessageDialog(null, "영화관 삭제를 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+					
+			} catch (Exception e1) {
+				JOptionPane.showMessageDialog(null, "영화관 삭제를 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+				System.out.println(e1.toString());
+			}
 				ui.update_UI("cinema_manage");
 				break;
 			case "취소":

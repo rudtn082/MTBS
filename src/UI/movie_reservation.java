@@ -3,6 +3,9 @@ package UI;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
@@ -17,11 +20,13 @@ import Cinema.cinemaDB;
 import Movie.movieDB;
 import People.member;
 import People.memberDB;
+import Seat.seatDB;
 
 public class movie_reservation extends JPanel {
 	JButton movie_search, movie_reserv, logout, dropout;
 	UI_Main ui;
 	JButton ok, cancel;
+	JComboBox seatCombo;
 
 	public movie_reservation(UI_Main ui) {
 		this.ui = ui;
@@ -33,50 +38,139 @@ public class movie_reservation extends JPanel {
 		lblNewLabel.setBounds(0, 0, 1024, 768);
 
 		// 콤보 박스 ===============================================
-		JPanel panel = new JPanel();
-		panel.setBounds(500, 220, 200, 70);
-		panel.setOpaque(false);
-		
+		// 영화 선택 콤보 박스 생성 및 추가
 		movieDB movieDB = new movieDB();
 		Vector v = movieDB.getMovieList();
 
 		// 콤보 박스 내 선택 가능 메뉴 선언 (영화)
-		String[] movie = new String[v.size()];
-		
-		for(int i = 0; i<v.size(); i++) {
-			movie[i] = (String)((Vector)v.get(i)).get(2);
+		String[] temp = new String[v.size()];
+		ArrayList<String> list = new ArrayList<String>();
+
+		// 영화 중복 제거
+		for (int i = 0; i < v.size(); i++) {
+			int j = 0;
+			for (j = 0; j < i; j++) {
+				if (list.get(j).equals((String) ((Vector) v.get(i)).get(2)))
+					break;
+			}
+			if (j == i) {
+				list.add((String) ((Vector) v.get(i)).get(2));
+			}
 		}
-		
-		// 영화 선택 콤보 박스 생성 및 추가
+
+		String[] movie = new String[list.size()];
+
+		for (int i = 0; i < list.size(); i++) {
+			movie[i] = list.get(i);
+		}
+
 		JComboBox movieCombo = new JComboBox();
+		movieCombo.setBounds(390, 210, 200, 30);
+		movieCombo.setOpaque(false);
+		add(movieCombo);
 		movieCombo.setModel(new DefaultComboBoxModel(movie));
-		//===========================================================
-		JPanel panel2 = new JPanel();
-		panel2.setBounds(500, 270, 200, 70);
-		panel2.setOpaque(false);
-		
+
+		// 콤보 박스 년도 값 변경
+		movieCombo.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent ev) {
+				seatDB seatDB = new seatDB();
+				String[] seat = null;
+				Object movieName = ev.getItem();
+				Vector v3 = seatDB.getSeatList(movieName.toString());
+				// TODO Auto-generated method stub
+				if (v3 != null) {
+					seat = new String[v3.size()];
+
+					for (int i = 0; i < v3.size(); i++) {
+						seat[i] = ((String) ((Vector) v3.get(i)).get(0));
+					}
+				}
+				System.out.println(v3);
+
+				seatCombo.setModel(new DefaultComboBoxModel(seat));
+				seatCombo.revalidate();
+				seatCombo.repaint();
+			}
+		});
+		// ===========================================================
+		// 영화관 선택 콤보 박스 생성 및 추가
 		cinemaDB cinemaDB = new cinemaDB();
 		Vector v2 = cinemaDB.getCinemaList();
-		
+
 		String[] cinema = new String[v2.size()];
-		
-		for(int i = 0; i<v2.size(); i++) {
-			cinema[i] = (String)((Vector)v2.get(i)).get(0);
+
+		for (int i = 0; i < v2.size(); i++) {
+			cinema[i] = (String) ((Vector) v2.get(i)).get(0);
 		}
-		
-		// 영화 선택 콤보 박스 생성 및 추가
+
 		JComboBox cinemaCombo = new JComboBox();
+		cinemaCombo.setBounds(390, 280, 200, 30);
+		cinemaCombo.setOpaque(false);
+		add(cinemaCombo);
 		cinemaCombo.setModel(new DefaultComboBoxModel(cinema));
-		
+		// ===========================================================
+		// 좌석 선택 콤보 박스 생성 및 추가
+		seatDB seatDB = new seatDB();
+		String[] seat = null;
+		Object movieName = movieCombo.getSelectedItem();
+		Vector v3 = seatDB.getSeatList(movieName.toString());
+
+		if (v3 != null) {
+			seat = new String[v3.size()];
+
+			for (int i = 0; i < v3.size(); i++) {
+				seat[i] = ((String) ((Vector) v3.get(i)).get(0));
+			}
+		}
+
+		// 영화 선택 콤보 박스 생성 및 추가
+		seatCombo = new JComboBox();
+		seatCombo.setBounds(390, 355, 200, 30);
+		seatCombo.setOpaque(false);
+		seatCombo.setModel(new DefaultComboBoxModel(seat));
+		add(seatCombo);
+		// ===========================================================
+		// 날짜 선택 콤보 박스 생성 및 추가
+		// 콤보 박스 년도 값 가져오기
+		String[] date = new String[30];
+
+		for (int i = 0; i < 30; i++) {
+			date[i] = String.valueOf(i + 1);
+		}
+
+		// 영화 선택 콤보 박스 생성 및 추가
+		JComboBox dateCombo = new JComboBox();
+		dateCombo.setBounds(390, 430, 200, 30);
+		dateCombo.setOpaque(false);
+		add(dateCombo);
+		dateCombo.setModel(new DefaultComboBoxModel(date));
+		// ===========================================================
+		// 시간 선택 콤보 박스 생성 및 추가
+		// 콤보 박스 년도 값 가져오기
+		String[] time = new String[5];
+
+		time[0] = "10시";
+		time[1] = "12시";
+		time[2] = "14시";
+		time[3] = "16시";
+		time[4] = "18시";
+
+		// 영화 선택 콤보 박스 생성 및 추가
+		JComboBox timeCombo = new JComboBox();
+		timeCombo.setBounds(390, 505, 200, 30);
+		timeCombo.setOpaque(false);
+		add(timeCombo);
+		timeCombo.setModel(new DefaultComboBoxModel(time));
 		// 콤보 박스 ====================================================
-		
+
 		// 영화 검색 버튼 추가
 		movie_search = new JButton("영화 검색");
 		movie_search.setContentAreaFilled(false);
 		movie_search.setFocusPainted(false);
 		movie_search.setForeground(Color.WHITE);
 		movie_search.setBounds(20, 23, 200, 55);
-		
+
 		// 영화 예약 버튼 추가
 		movie_reserv = new JButton("영화 예약");
 		movie_reserv.setContentAreaFilled(false);
@@ -90,14 +184,14 @@ public class movie_reservation extends JPanel {
 		logout.setFocusPainted(false);
 		logout.setForeground(Color.WHITE);
 		logout.setBounds(520, 23, 200, 55);
-		
+
 		// 회원탈퇴 버튼 추가
 		dropout = new JButton("회원탈퇴");
 		dropout.setContentAreaFilled(false);
 		dropout.setFocusPainted(false);
 		dropout.setForeground(Color.WHITE);
 		dropout.setBounds(770, 23, 200, 55);
-		
+
 		// 예약버튼 추가
 		ok = new JButton("예약");
 		ok.setBackground(new Color(114, 137, 218));
@@ -113,7 +207,6 @@ public class movie_reservation extends JPanel {
 		cancel.setBounds(510, 647, 350, 60);
 		cancel.setBorderPainted(false);
 		cancel.setFocusPainted(false);
-		
 
 		add(movie_search);
 		add(movie_reserv);
@@ -121,9 +214,6 @@ public class movie_reservation extends JPanel {
 		add(dropout);
 		add(ok);
 		add(cancel);
-		add(panel);
-		panel.add(movieCombo);
-		panel.add(cinemaCombo);
 		add(lblNewLabel);
 		movie_search.addActionListener(new MyActionListener());
 		movie_reserv.addActionListener(new MyActionListener());
@@ -136,7 +226,7 @@ public class movie_reservation extends JPanel {
 	class MyActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			switch(e.getActionCommand()) {
+			switch (e.getActionCommand()) {
 			case "영화 검색":
 				ui.update_UI("movie_search");
 				break;
@@ -150,7 +240,7 @@ public class movie_reservation extends JPanel {
 			case "회원탈퇴":
 				try {
 					int result = JOptionPane.showConfirmDialog(null, "탈퇴 하시겠습니까?", "메세지", JOptionPane.WARNING_MESSAGE);
-					if(result == JOptionPane.YES_OPTION) {
+					if (result == JOptionPane.YES_OPTION) {
 						member member = ui.getmember();
 						memberDB memberDB = new memberDB();
 						memberDB.deleteMember(member.getmID(), member.getmPW());
@@ -158,7 +248,7 @@ public class movie_reservation extends JPanel {
 						ui.update_UI("Login");
 					}
 					break;
-				} catch(Exception e1) {
+				} catch (Exception e1) {
 					System.out.println(e1.toString());
 					JOptionPane.showMessageDialog(null, "탈퇴를 실패했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
 					break;
@@ -167,7 +257,7 @@ public class movie_reservation extends JPanel {
 				System.out.println("예약버튼");
 				break;
 			case "취소":
-				ui.update_UI("movie_manage");
+				ui.update_UI("Main_Menu");
 			}
 		}
 	}

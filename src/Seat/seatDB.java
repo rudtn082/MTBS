@@ -61,7 +61,7 @@ public class seatDB {
    }
 
    // 좌석 리스트 출력
-   public Vector getSeatList() {
+   public Vector getSeatList(String movieName) {
 
       Vector data = new Vector(); // Jtable에 값을 쉽게 넣는 방법 1. 2차원배열 2. Vector 에 vector추가
 
@@ -71,8 +71,9 @@ public class seatDB {
 
       try {
          con = getConn();
-         String sql = "select * from seat order by sSeatNum asc";
+         String sql = "select * from seat where sTheaterID in (select TheaterID from theater where MovieTitle=?)";
          ps = con.prepareStatement(sql);
+         ps.setString(1, movieName);
          rs = ps.executeQuery();
 
          while (rs.next()) {
