@@ -3,6 +3,7 @@ package UI;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -12,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import Cinema.cinemaDB;
+import Movie.movieDB;
 import People.member;
 import People.memberDB;
 
@@ -31,15 +34,42 @@ public class movie_reservation extends JPanel {
 
 		// 콤보 박스 ===============================================
 		JPanel panel = new JPanel();
-		panel.setBounds(750, 102, 110, 70);
+		panel.setBounds(500, 220, 200, 70);
 		panel.setOpaque(false);
 		
-		// 콤보 박스 내 선택 가능 메뉴 선언 (전공)
-		String[] major = {"국어국문학과","영어영문학과","철학과","심리학과","무역학과","건축공학과","환경공학과","기계공학부","토목공학과","컴퓨터공학과"};
+		movieDB movieDB = new movieDB();
+		Vector v = movieDB.getMovieList();
 		
-		// 전공 선택 콤보 박스 생성 및 추가
-		JComboBox majorCombo = new JComboBox();
-		majorCombo.setModel(new DefaultComboBoxModel(major));
+		System.out.println();
+
+		// 콤보 박스 내 선택 가능 메뉴 선언 (영화)
+		String[] movie = new String[v.size()];
+		
+		for(int i = 0; i<v.size(); i++) {
+			movie[i] = (String)((Vector)v.get(i)).get(2);
+		}
+		
+		// 영화 선택 콤보 박스 생성 및 추가
+		JComboBox movieCombo = new JComboBox();
+		movieCombo.setModel(new DefaultComboBoxModel(movie));
+		//===========================================================
+		JPanel panel2 = new JPanel();
+		panel2.setBounds(500, 270, 200, 70);
+		panel2.setOpaque(false);
+		
+		cinemaDB cinemaDB = new cinemaDB();
+		Vector v2 = cinemaDB.getCinemaList();
+		
+		String[] cinema = new String[v2.size()];
+		
+		for(int i = 0; i<v2.size(); i++) {
+			cinema[i] = (String)((Vector)v2.get(i)).get(0);
+		}
+		
+		// 영화 선택 콤보 박스 생성 및 추가
+		JComboBox cinemaCombo = new JComboBox();
+		cinemaCombo.setModel(new DefaultComboBoxModel(cinema));
+		
 		// 콤보 박스 ====================================================
 		
 		// 영화 검색 버튼 추가
@@ -94,7 +124,8 @@ public class movie_reservation extends JPanel {
 		add(ok);
 		add(cancel);
 		add(panel);
-		panel.add(majorCombo);
+		panel.add(movieCombo);
+		panel.add(cinemaCombo);
 		add(lblNewLabel);
 		movie_search.addActionListener(new MyActionListener());
 		movie_reserv.addActionListener(new MyActionListener());

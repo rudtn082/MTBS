@@ -2,7 +2,6 @@ package Cinema;
 
 public class cinema {
 	private String cNAME;
-	private String cMovieID;
 	private String cAddress;
 	private String cPhoneNum;
 	public String getcNAME() {
@@ -10,12 +9,6 @@ public class cinema {
 	}
 	public void setcNAME(String cNAME) {
 		this.cNAME = cNAME;
-	}
-	public String getcMovieID() {
-		return cMovieID;
-	}
-	public void setcMovieID(String cMovieID) {
-		this.cMovieID = cMovieID;
 	}
 	public String getcAddress() {
 		return cAddress;
@@ -29,6 +22,4 @@ public class cinema {
 	public void setcPhoneNum(String cPhoneNum) {
 		this.cPhoneNum = cPhoneNum;
 	}
-	
-	
 }

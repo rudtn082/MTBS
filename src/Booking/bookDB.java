@@ -13,50 +13,53 @@ import javax.swing.table.DefaultTableModel;
 import People.member;
 
 public class bookDB {
-	public bookDB(){
-		
-	}
-	
-	// DB연결 메소드
-	public Connection getConn() {
-		Connection con = null;
+   public bookDB(){
+      
+   }
+   
+   // DB연결 메소드
+   public Connection getConn() {
+      Connection con = null;
 
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver"); // 1. 드라이버 로딩
-			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/MTBS?serverTimezone=UTC&useSSL=false",
-					"MTBS", "mtbs"); // 2. 드라이버 연결
+      try {
+         Class.forName("com.mysql.cj.jdbc.Driver"); // 1. 드라이버 로딩
+         con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/MTBS?serverTimezone=UTC&useSSL=false",
+               "MTBS", "mtbs"); // 2. 드라이버 연결
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
 
-		return con;
-	}
-	
-	// 한사람의 회원 정보 가져오기
-	public book getStartTime(int time) {
+      return con;
+   }
+   
+   // 한사람의 회원 정보 가져오기
+   public book getTheaterID(String bookNo) {
 
-		book book = new book();
+      book book = new book();
 
-		Connection con = null; // 연결
-		PreparedStatement ps = null; // 명령
-		ResultSet rs = null; // 결과
+      Connection con = null; // 연결
+      PreparedStatement ps = null; // 명령
+      ResultSet rs = null; // 결과
 
-		try {
-			con = getConn();
-			String sql = "select startTime from theaterSchedule";
-			ps = con.prepareStatement(sql);
-			ps.setInt(3, time);
+      try {
+         con = getConn();
+         String sql = "select * from book where bookNo=?";
+         ps = con.prepareStatement(sql);
+         ps.setString(1, bookNo);
 
-			rs = ps.executeQuery();
+         rs = ps.executeQuery();
 
-			if (rs.next()) {
-				book.setstartTime(rs.getInt("startTime"));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+         if (rs.next()) {
+            book.setbookNo(rs.getInt("bookNo"));
+            book.setmID(rs.getString("mID"));
+            book.setTheaterID(rs.getString("theaterID"));
+            book.setticketNo(rs.getInt("ticketNo"));
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
 
-		return book;
-	}
+      return book;
+   }
 }

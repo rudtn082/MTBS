@@ -50,7 +50,7 @@ public class movieDB {
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				movie.setMvID(rs.getString("ID"));
-				movie.setMvCinema(rs.getString("Cinema"));
+				movie.setMvTheaterID(rs.getString("TheaterID"));
 				movie.setMvMovieTitle(rs.getString("MovieTitle"));
 				movie.setMvDirector(rs.getString("Director"));
 				movie.setMvActor(rs.getString("Actor"));
@@ -82,7 +82,7 @@ public class movieDB {
 
 			while (rs.next()) {
 				String mvID = rs.getString("ID");
-				String mvCinema = rs.getString("Cinema");
+				String mvTheaterID = rs.getString("TheaterID");
 				String mvMovieTitle = rs.getString("MovieTitle");
 				String mvDirector = rs.getString("Director");
 				String mvActor = rs.getString("Actor");
@@ -92,7 +92,7 @@ public class movieDB {
 
 				Vector row = new Vector();
 				row.add(mvID);
-				row.add(mvCinema);
+				row.add(mvTheaterID);
 				row.add(mvMovieTitle);
 				row.add(mvDirector);
 				row.add(mvActor);
@@ -115,11 +115,11 @@ public class movieDB {
 
 		try {
 			con = getConn();
-			String sql = "insert into movie(ID,Cinema, MovieTitle, Director, Actor, Grade, Info, AccumulateNum) values(?,?,?,?,?,?,?,?)";
+			String sql = "insert into movie(ID,TheaterID, MovieTitle, Director, Actor, Grade, Info, AccumulateNum) values(?,?,?,?,?,?,?,?)";
 
 			ps = con.prepareStatement(sql);
 			ps.setString(1, movie.getMvID());
-			ps.setString(2,  movie.getMvCinema());
+			ps.setString(2,  movie.getMvTheaterID());
 			ps.setString(3, movie.getMvMovieTitle());
 			ps.setString(4, movie.getMvDirector());
 			ps.setString(5, movie.getMvActor());
@@ -142,6 +142,8 @@ public class movieDB {
 
 		return false;
 	}
+	
+	
 
 	// 영화 정보 수정
 	public boolean updateMovie(movie movie) {
@@ -150,11 +152,11 @@ public class movieDB {
 		PreparedStatement ps = null;
 		try {
 			con = getConn();
-			String sql = "update movie set ID =?, Cinema=?, MovieTitle=?, Director=?, Actor=?, Grade=?, Info=?, AccumulateNum=? "
+			String sql = "update movie set ID =?, TheaterID=?, MovieTitle=?, Director=?, Actor=?, Grade=?, Info=?, AccumulateNum=? "
 					+ "where ID=?";
 			ps = con.prepareStatement(sql);
 			ps.setString(1, movie.getMvID());
-			ps.setString(2,  movie.getMvCinema());
+			ps.setString(2,  movie.getMvTheaterID());
 			ps.setString(3, movie.getMvMovieTitle());
 			ps.setString(4, movie.getMvDirector());
 			ps.setString(5, movie.getMvActor());

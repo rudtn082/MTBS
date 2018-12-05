@@ -42,17 +42,18 @@ public class TheaterDB {
 
 		try {
 			con = getConn();
-			String sql = "select * from theater where id=?";
+			String sql = "select * from theater where TheaterID=?";
 			ps = con.prepareStatement(sql);
 			ps.setString(1, id);
 
 			rs = ps.executeQuery();
 
 			if (rs.next()) {
-				theater.settTheaterNum(rs.getString("TheaterNum"));
+				theater.settTheaterID(rs.getString("TheaterID"));
 				theater.settCinemaName(rs.getString("CinemaName"));
 				theater.settSeatNum(rs.getString("SeatNum"));
 				theater.settMovieID(rs.getString("MovieID"));
+				theater.settStartTime(rs.getString("StartTime"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,23 +73,24 @@ public class TheaterDB {
 
 		try {
 			con = getConn();
-			String sql = "select * from theater order by TheaterNum asc";
+			String sql = "select * from theater order by TheaterID asc";
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				String tTheaterNum = rs.getString("TheaterNum");
+				String tTheaterID = rs.getString("TheaterID");
 				String tCinemaName = rs.getString("CinemaName");
 				String tSeatNum = rs.getString("SeatNum");
 				String tMovieID = rs.getString("MovieID");
-				
+				String tStartTime = rs.getString("StartTime");
 
 				Vector row = new Vector();
-				row.add(tTheaterNum);
+				row.add(tTheaterID);
 				row.add(tCinemaName);
 				row.add(tSeatNum);
 				row.add(tMovieID);
-
+				row.add(tStartTime);
+				
 				data.add(row);
 			} // while
 		} catch (Exception e) {
@@ -104,13 +106,14 @@ public class TheaterDB {
 
 		try {
 			con = getConn();
-			String sql = "insert into theater(TheaterNum,CinemaName,SeatNum,MovieID) values(?,?,?,?)";
+			String sql = "insert into theater(TheaterID,CinemaName,SeatNum,MovieID,StartTime) values(?,?,?,?,?)";
 
 			ps = con.prepareStatement(sql);
-			ps.setString(1, theater.gettTheaterNum());
+			ps.setString(1, theater.gettTheaterID());
 			ps.setString(2, theater.gettCinemaName());
 			ps.setString(3, theater.gettSeatNum());
 			ps.setString(4, theater.gettMovieID());
+			ps.setString(5, theater.gettStartTime());
 			int r = ps.executeUpdate(); // 실행 -> 저장
 
 			if (r > 0) {
@@ -135,15 +138,16 @@ public class TheaterDB {
 		PreparedStatement ps = null;
 		try {
 			con = getConn();
-			String sql = "update theater set TheaterNum=?, CinemaName=?, SeatNum=?, MovieID=?"
-					+ "where TheaterNum=?";
+			String sql = "update theater set TheaterID=?, CinemaName=?, SeatNum=?, MovieID=?, StartTime=?"
+					+ "where TheaterID=?";
 			ps = con.prepareStatement(sql);
 
-			ps.setString(1, theater.gettTheaterNum());
+			ps.setString(1, theater.gettTheaterID());
 			ps.setString(2, theater.gettCinemaName());
 			ps.setString(3, theater.gettSeatNum());
 			ps.setString(4, theater.gettMovieID());
-
+			ps.setString(5, theater.gettStartTime());
+			
 			int r = ps.executeUpdate(); // 실행 -> 수정
 			// 1~n: 성공 , 0 : 실패
 
@@ -159,16 +163,16 @@ public class TheaterDB {
 	}
 
 	// 회원 삭제
-	public boolean deleteTheater(String TheaterNum) {
+	public boolean deleteTheater(String TheaterID) {
 		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
 			con = getConn();
-			String sql = "delete from theater where TheaterNum=?";
+			String sql = "delete from theater where TheaterID=?";
 
 			ps = con.prepareStatement(sql);
-			ps.setString(1, TheaterNum);
+			ps.setString(1, TheaterID);
 
 			int r = ps.executeUpdate(); // 실행 -> 삭제
 
@@ -191,7 +195,7 @@ public class TheaterDB {
 
 		try {
 			con = getConn();
-			String sql = "select * from theater order by TheaterNum asc";
+			String sql = "select * from theater order by TheaterID asc";
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
 

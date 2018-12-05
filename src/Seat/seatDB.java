@@ -33,9 +33,9 @@ public class seatDB {
    }
 
    // 한 영화 정보 가져오기
-   public seat getSeatDTO(String ID) {
+   public Seat getSeatDTO(String ID) {
 
-      seat seat = new seat();
+      Seat seat = new Seat();
 
       Connection con = null; // 연결
       PreparedStatement ps = null; // 명령
@@ -43,30 +43,25 @@ public class seatDB {
 
       try {
          con = getConn();
-         String sql = "select * from seat where SeatNum=?";
+         String sql = "select * from seat where sSeatNum=?";
          ps = con.prepareStatement(sql);
          ps.setString(1, ID);
          
          rs = ps.executeQuery();
          if (rs.next()) {
-            movie.setMvID(rs.getString("ID"));
-            movie.setMvCinema(rs.getString("Cinema"));
-            movie.setMvMovieTitle(rs.getString("MovieTitle"));
-            movie.setMvDirector(rs.getString("Director"));
-            movie.setMvActor(rs.getString("Actor"));
-            movie.setMvGrade(rs.getString("Grade"));
-            movie.setMvInfo(rs.getString("Info"));
-            movie.setMvAccumulateNum(rs.getString("AccumulateNum"));
+            seat.setsSeatNum(rs.getString("sSeatNum"));
+            seat.setsTheaterID(rs.getString("sTheaterID"));
+            
          }
       } catch (Exception e) {
          e.printStackTrace();
       }
 
-      return movie;
+      return seat;
    }
 
    // 영화리스트 출력
-   public Vector getMovieList() {
+   public Vector getSeatList() {
 
       Vector data = new Vector(); // Jtable에 값을 쉽게 넣는 방법 1. 2차원배열 2. Vector 에 vector추가
 
@@ -76,30 +71,19 @@ public class seatDB {
 
       try {
          con = getConn();
-         String sql = "select * from movie order by MovieTitle asc";
+         String sql = "select * from seat order by sSeatNum asc";
          ps = con.prepareStatement(sql);
          rs = ps.executeQuery();
 
          while (rs.next()) {
-            String mvID = rs.getString("ID");
-            String mvCinema = rs.getString("Cinema");
-            String mvMovieTitle = rs.getString("MovieTitle");
-            String mvDirector = rs.getString("Director");
-            String mvActor = rs.getString("Actor");
-            String mvGrade = rs.getString("Grade");
-            String mvInfo = rs.getString("Info");
-            String mvAccumulateNum = rs.getString("AccumulateNum");
+            String sSeatNum = rs.getString("sSeatNum");
+            String sTheaterID = rs.getString("sTheaterID");
+           
 
             Vector row = new Vector();
-            row.add(mvID);
-            row.add(mvCinema);
-            row.add(mvMovieTitle);
-            row.add(mvDirector);
-            row.add(mvActor);
-            row.add(mvGrade);
-            row.add(mvInfo);
-            row.add(mvAccumulateNum);
-
+            row.add(sSeatNum);
+            row.add(sTheaterID);
+           
             data.add(row);
          } // while
       } catch (Exception e) {
@@ -109,30 +93,25 @@ public class seatDB {
    }
 
    // 영화 등록
-   public boolean insertMovie(movie movie) {
+   public boolean insertSeat(Seat seat) {
       Connection con = null; // 연결
       PreparedStatement ps = null; // 명령
 
       try {
          con = getConn();
-         String sql = "insert into movie(ID,Cinema, MovieTitle, Director, Actor, Grade, Info, AccumulateNum) values(?,?,?,?,?,?,?,?)";
+         String sql = "insert into seat(sSeatNum, sTheaterID) values(?,?)";
 
          ps = con.prepareStatement(sql);
-         ps.setString(1, movie.getMvID());
-         ps.setString(2,  movie.getMvCinema());
-         ps.setString(3, movie.getMvMovieTitle());
-         ps.setString(4, movie.getMvDirector());
-         ps.setString(5, movie.getMvActor());
-         ps.setString(6, movie.getMvGrade());
-         ps.setString(7, movie.getMvInfo());
-         ps.setString(8, movie.getMvAccumulateNum());
+         ps.setString(1, seat.getsSeatNum());
+         ps.setString(2,  seat.getsTheaterID());
+        
          int r = ps.executeUpdate(); // 실행 -> 저장
 
          if (r > 0) {
-            System.out.println("영화 추가 성공");
+            System.out.println("좌석 추가 성공");
             return true;
          } else {
-            System.out.println("영화 추가 실패");
+            System.out.println("좌석 추가 실패");
             return false;
          }
       
@@ -144,23 +123,18 @@ public class seatDB {
    }
 
    // 영화 정보 수정
-   public boolean updateMovie(movie movie) {
-      System.out.println("dto=" + movie.toString());
+   public boolean updateSeat(Seat seat) {
+      System.out.println("dto=" + seat.toString());
       Connection con = null;
       PreparedStatement ps = null;
       try {
          con = getConn();
-         String sql = "update movie set ID =?, Cinema=?, MovieTitle=?, Director=?, Actor=?, Grade=?, Info=?, AccumulateNum=? "
-               + "where ID=?";
+         String sql = "update seat set sSeatNum =?, sTheaterName=?"
+               + "where SeatNum=?";
          ps = con.prepareStatement(sql);
-         ps.setString(1, movie.getMvID());
-         ps.setString(2,  movie.getMvCinema());
-         ps.setString(3, movie.getMvMovieTitle());
-         ps.setString(4, movie.getMvDirector());
-         ps.setString(5, movie.getMvActor());
-         ps.setString(6, movie.getMvGrade());
-         ps.setString(7, movie.getMvInfo());
-         ps.setString(8,  movie.getMvAccumulateNum());         
+         ps.setString(1, seat.getsSeatNum());
+         ps.setString(2,  seat.getsTheaterID());
+               
          int r = ps.executeUpdate(); // 실행 -> 수정
          // 1~n: 성공 , 0 : 실패
          
@@ -176,13 +150,13 @@ public class seatDB {
    }
 
    // 회원 삭제
-   public boolean deleteMovie(String id) {
+   public boolean deleteSeat(String id) {
       Connection con = null;
       PreparedStatement ps = null;
 
       try {
          con = getConn();
-         String sql = "delete from movie where ID=?";
+         String sql = "delete from seat where sSeatNum=?";
 
          ps = con.prepareStatement(sql);
          ps.setString(1, id);
@@ -208,7 +182,7 @@ public class seatDB {
 
       try {
          con = getConn();
-         String sql = "select * from movie order by MovieTitle asc";
+         String sql = "select * from seat order by sSeatNum asc";
          ps = con.prepareStatement(sql);
          rs = ps.executeQuery();
 
@@ -251,5 +225,4 @@ public class seatDB {
             }
       }
    }
-}
 }

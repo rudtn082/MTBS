@@ -8,7 +8,6 @@ public class member {
 	private String mAddress;
 	private String mPN;
 	private String mticket;
-	private String mVIP;
 	
 	public String getmID() {
 		return mID;
@@ -52,11 +51,4 @@ public class member {
 	public void setmticket(String mticket) {
 		this.mticket = mticket;
 	}
-	public String getmVIP() {
-		return mVIP;
-	}
-	public void setmVIP(String mVIP) {
-		this.mVIP = mVIP;
-	}
-
 }

@@ -51,7 +51,6 @@ public class cinemaDB {
 
 			if (rs.next()) {
 				cinema.setcNAME(rs.getString("NAME"));
-				cinema.setcMovieID(rs.getString("MovieID"));
 				cinema.setcAddress(rs.getString("Address"));
 				cinema.setcPhoneNum(rs.getString("PhoneNum"));
 			}
@@ -63,7 +62,7 @@ public class cinemaDB {
 	}
 
 	// 멤버리스트 출력
-	public Vector getMemberList() {
+	public Vector getCinemaList() {
 
 		Vector data = new Vector(); // Jtable에 값을 쉽게 넣는 방법 1. 2차원배열 2. Vector 에 vector추가
 
@@ -79,13 +78,11 @@ public class cinemaDB {
 
 			while (rs.next()) {
 				String cName = rs.getString("NAME");
-				String cMovieID = rs.getString("MovieID");
 				String cAddress = rs.getString("Address");
 				String cPhoneNum = rs.getString("PhoneNum");
 
 				Vector row = new Vector();
 				row.add(cName);
-				row.add(cMovieID);
 				row.add(cAddress);
 				row.add(cPhoneNum);
 
@@ -98,27 +95,26 @@ public class cinemaDB {
 	}
 
 	// 회원 등록
-	public boolean insertMember(cinema cinema) {
+	public boolean insertCinema(cinema cinema) {
 		Connection con = null; // 연결
 		PreparedStatement ps = null; // 명령
 
 		try {
 			con = getConn();
-			String sql = "insert into cinema(NAME, MovieID, Address, PhoneNum) values(?,?,?,?)";
+			String sql = "insert into cinema(NAME, Address, PhoneNum) values(?,?,?)";
 
 			ps = con.prepareStatement(sql);
 			ps.setString(1, cinema.getcNAME());
-			ps.setString(2, cinema.getcMovieID());
-			ps.setString(3, cinema.getcAddress());
-			ps.setString(4, cinema.getcPhoneNum());
+			ps.setString(2, cinema.getcAddress());
+			ps.setString(3, cinema.getcPhoneNum());
 			
 			int r = ps.executeUpdate(); // 실행 -> 저장
 
 			if (r > 0) {
-				System.out.println("상영관 추가 성공");
+				System.out.println("영화관 추가 성공");
 				return true;
 			} else {
-				System.out.println("상영관 추가 실패");
+				System.out.println("영화관 추가 실패");
 				return false;
 			}
 
@@ -130,20 +126,19 @@ public class cinemaDB {
 	}
 
 	// 회원정보 수정
-	public boolean updateMember(cinema cinema) {
+	public boolean updateCinema(cinema cinema) {
 		System.out.println("dto=" + cinema.toString());
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
 			con = getConn();
-			String sql = "update member set NAME=?, MovieID=?, Address=?, PhoneNum=?"
+			String sql = "update cinema set NAME=?, Address=?, PhoneNum=?"
 					+ "where NAME=?";
 			ps = con.prepareStatement(sql);
 
 			ps.setString(1, cinema.getcNAME());
-			ps.setString(2, cinema.getcMovieID());
-			ps.setString(3, cinema.getcAddress());
-			ps.setString(4, cinema.getcPhoneNum());
+			ps.setString(2, cinema.getcAddress());
+			ps.setString(3, cinema.getcPhoneNum());
 			
 
 			int r = ps.executeUpdate(); // 실행 -> 수정

@@ -56,7 +56,6 @@ public class memberDB {
 				member.setmAddress(rs.getString("Address"));
 				member.setmPN(rs.getString("PN"));
 				member.setmticket(rs.getString("ticket"));
-				member.setmVIP(rs.getString("VIP"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,7 +87,6 @@ public class memberDB {
 				String mAddress = rs.getString("Address");
 				String mPN = rs.getString("PN");
 				String mticket = rs.getString("ticket");
-				String mVIP = rs.getString("VIP");
 
 				ArrayList<String> array = new ArrayList<String>();
 				array.add(mID);
@@ -98,7 +96,6 @@ public class memberDB {
 				array.add(mAddress);
 				array.add(mPN);
 				array.add(mticket);
-				array.add(mVIP);
 
 				data.add(array);
 			} // while
@@ -115,7 +112,7 @@ public class memberDB {
 
 		try {
 			con = getConn();
-			String sql = "insert into member(ID,PW,Name,DOB,Address,PN,ticket,VIP) values(?,?,?,?,?,?,?,?)";
+			String sql = "insert into member(ID,PW,Name,DOB,Address,PN,ticket) values(?,?,?,?,?,?,?)";
 
 			ps = con.prepareStatement(sql);
 			ps.setString(1, member.getmID());
@@ -125,7 +122,6 @@ public class memberDB {
 			ps.setString(5, member.getmAddress());
 			ps.setString(6, member.getmPN());
 			ps.setString(7, member.getmticket());
-			ps.setString(8, member.getmVIP());
 			int r = ps.executeUpdate(); // 실행 -> 저장
 
 			if (r > 0) {
@@ -150,7 +146,7 @@ public class memberDB {
 		PreparedStatement ps = null;
 		try {
 			con = getConn();
-			String sql = "update member set ID=?, PW=?, Name=?, DOB=?, Address=?, PN=?, ticket=?, VIP=? "
+			String sql = "update member set ID=?, PW=?, Name=?, DOB=?, Address=?, PN=?, ticket=?"
 					+ "where ID=? and PW=?";
 			ps = con.prepareStatement(sql);
 
@@ -161,8 +157,7 @@ public class memberDB {
 			ps.setString(5, member.getmAddress());
 			ps.setString(6, member.getmPN());
 			ps.setString(7, member.getmticket());
-			ps.setString(8, member.getmVIP());
-
+			
 			int r = ps.executeUpdate(); // 실행 -> 수정
 			// 1~n: 성공 , 0 : 실패
 

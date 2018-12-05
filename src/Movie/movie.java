@@ -1,24 +1,24 @@
 package Movie;
 
 public class movie {
-	private String mvID;
-	private String mvCinema;
-	private String mvMovieTitle;
-	private String mvDirector;
-	private String mvActor;
-	private String mvGrade;
-	private String mvInfo;
-	private String mvAccumulateNum;
+	private String mvID;  //아이디
+	private String mvTheaterID; //상영관 아이디	
+	private String mvMovieTitle; //영화제목
+	private String mvDirector; //영화 감독
+	private String mvGrade; //등급
+	private String mvActor;	//영화감독
+	private String mvInfo;//주요정보
+	private String mvAccumulateNum;//누적예매수
 	
 	
 	public String getMvAccumulateNum() {
 		return mvAccumulateNum;
 	}
-	public String getMvCinema() {
-		return mvCinema;
+	public String getMvTheaterID() {
+		return mvTheaterID;
 	}
-	public void setMvCinema(String mvCinema) {
-		this.mvCinema = mvCinema;
+	public void setMvTheaterID(String mvTheaterID) {
+		this.mvTheaterID = mvTheaterID;
 	}
 	public void setMvAccumulateNum(String mvAccumulateNum) {
 		this.mvAccumulateNum = mvAccumulateNum;
@@ -60,11 +60,4 @@ public class movie {
 	public void setMvInfo(String mvInfo) {
 		this.mvInfo = mvInfo;
 	}
-	
-	
-	
-	
-	
-	
-	
 }
