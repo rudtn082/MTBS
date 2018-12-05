@@ -32,7 +32,7 @@ public class seatDB {
       return con;
    }
 
-   // 한 영화 정보 가져오기
+   // 한 좌석 정보 가져오기
    public Seat getSeatDTO(String ID) {
 
       Seat seat = new Seat();
@@ -60,7 +60,7 @@ public class seatDB {
       return seat;
    }
 
-   // 영화리스트 출력
+   // 좌석 리스트 출력
    public Vector getSeatList() {
 
       Vector data = new Vector(); // Jtable에 값을 쉽게 넣는 방법 1. 2차원배열 2. Vector 에 vector추가
@@ -92,7 +92,7 @@ public class seatDB {
       return data;
    }
 
-   // 영화 등록
+   // 좌석 등록
    public boolean insertSeat(Seat seat) {
       Connection con = null; // 연결
       PreparedStatement ps = null; // 명령
@@ -120,57 +120,6 @@ public class seatDB {
       }
 
       return false;
-   }
-
-   // 영화 정보 수정
-   public boolean updateSeat(Seat seat) {
-      System.out.println("dto=" + seat.toString());
-      Connection con = null;
-      PreparedStatement ps = null;
-      try {
-         con = getConn();
-         String sql = "update seat set sSeatNum =?, sTheaterName=?"
-               + "where SeatNum=?";
-         ps = con.prepareStatement(sql);
-         ps.setString(1, seat.getsSeatNum());
-         ps.setString(2,  seat.getsTheaterID());
-               
-         int r = ps.executeUpdate(); // 실행 -> 수정
-         // 1~n: 성공 , 0 : 실패
-         
-         if (r > 0)
-            return true;
-         else return false;
-
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
-
-      return true;
-   }
-
-   // 회원 삭제
-   public boolean deleteSeat(String id) {
-      Connection con = null;
-      PreparedStatement ps = null;
-
-      try {
-         con = getConn();
-         String sql = "delete from seat where sSeatNum=?";
-
-         ps = con.prepareStatement(sql);
-         ps.setString(1, id);
-         //ps.setString(2, pwd);
-         int r = ps.executeUpdate(); // 실행 -> 삭제
-
-         if (r > 0)
-            return true;
-         else return false;
-
-      } catch (Exception e) {
-         System.out.println(e + "-> 오류발생");
-      }
-      return true;
    }
 
    /** DB데이터 다시 불러오기 */

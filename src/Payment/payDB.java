@@ -33,7 +33,7 @@ public class payDB {
       return con;
    }
    
-   // 한사람의 회원 정보 가져오기
+   // 한 결제 정보 가져오기
    public pay getStartTime(int payNo) {
 
       pay pay = new pay();

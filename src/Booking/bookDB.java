@@ -33,7 +33,7 @@ public class bookDB {
       return con;
    }
    
-   // 한사람의 회원 정보 가져오기
+   // 한 예약 정보 가져오기
    public book getTheaterID(String bookNo) {
 
       book book = new book();

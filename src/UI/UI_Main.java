@@ -116,7 +116,7 @@ public class UI_Main extends JFrame {
 			break;
 		case "cinema_change":
 			getContentPane().removeAll();
-			getContentPane().add(cinema_add);
+			getContentPane().add(cinema_change);
 			revalidate();
 			repaint();
 			break;

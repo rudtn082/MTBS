@@ -39,8 +39,6 @@ public class movie_reservation extends JPanel {
 		
 		movieDB movieDB = new movieDB();
 		Vector v = movieDB.getMovieList();
-		
-		System.out.println();
 
 		// 콤보 박스 내 선택 가능 메뉴 선언 (영화)
 		String[] movie = new String[v.size()];
@@ -169,7 +167,7 @@ public class movie_reservation extends JPanel {
 				System.out.println("예약버튼");
 				break;
 			case "취소":
-				System.out.println("취소버튼");
+				ui.update_UI("movie_manage");
 			}
 		}
 	}

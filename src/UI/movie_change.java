@@ -76,7 +76,6 @@ public class movie_change extends JPanel {
 		mvInfo.setForeground(Color.WHITE);
 		mvInfo.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		mvInfo.setCaretColor(Color.white);
-		
 
 		// 수정버튼 추가
 		ok = new JButton("수정");
@@ -103,12 +102,6 @@ public class movie_change extends JPanel {
 		add(cancel);
 		add(ok);
 		add(lblNewLabel);
-		mvID.addActionListener(new MyActionListener());
-		mvMovieTitle.addActionListener(new MyActionListener());
-		mvDirector.addActionListener(new MyActionListener());
-		mvActor.addActionListener(new MyActionListener());
-		mvGrade.addActionListener(new MyActionListener());
-		mvInfo.addActionListener(new MyActionListener());
 		ok.addActionListener(new MyActionListener());
 		cancel.addActionListener(new MyActionListener());
 	}
@@ -123,88 +116,83 @@ public class movie_change extends JPanel {
 					JOptionPane.showMessageDialog(null, "영화 아이디를 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
 					break;
 				} else {
-					if (isStringDouble(mvID.getText()) != false) {
-						JOptionPane.showMessageDialog(null, "영화 아이디는 글자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+					if (isStringDouble(mvID.getText()) == false) {
+						JOptionPane.showMessageDialog(null, "영화 아이디는 숫자로 입력해주세요.", "입력 오류",
+								JOptionPane.WARNING_MESSAGE);
 						break;
 					}
-				}
-
-				// 영화 제목 예외처리
-				if (mvMovieTitle.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "영화 제목을 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
-					break;
 				}
 
 				// 감독 예외처리
-				if (mvDirector.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "감독이름을 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				if (isStringDouble(mvDirector.getText()) == true) {
+					JOptionPane.showMessageDialog(null, "감독이름은 글자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
 					break;
-				} else {
-					if (isStringDouble(mvDirector.getText()) == true) {
-						JOptionPane.showMessageDialog(null, "감독이름은 글자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
-						break;
-					}
 				}
 
 				// 출연 예외처리
-				if (mvActor.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "출연자를 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				if (isStringDouble(mvActor.getText()) == true) {
+					JOptionPane.showMessageDialog(null, "출연자는 글자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
 					break;
-				} else {
-					if (isStringDouble(mvActor.getText()) == true) {
-						JOptionPane.showMessageDialog(null, "출연자는 글자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
-						break;
-					}
 				}
 
 				// 등급 예외처리
-				if (mvGrade.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "등급을 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
-					break;
-				} else {
+				if (!mvGrade.getText().equals("")) {
 					if (isStringDouble(mvGrade.getText()) == false) {
 						JOptionPane.showMessageDialog(null, "등급은 숫자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
 						break;
 					} else {
 						if (mvGrade.getText().length() != 2) {
-							JOptionPane.showMessageDialog(null, "등급은 2자리로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog(null, "등급은 2자리로 입력해주세요.", "입력 오류",
+									JOptionPane.WARNING_MESSAGE);
 							break;
 						}
 					}
 				}
 
 				// 주요 정보 예외처리
-				if (mvInfo.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "주요정보를 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				if (isStringDouble(mvInfo.getText()) == true) {
+					JOptionPane.showMessageDialog(null, "주요정보는 글자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
 					break;
-				} else {
-					if (isStringDouble(mvInfo.getText()) == true) {
-						JOptionPane.showMessageDialog(null, "주요정보는 글자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+				}
+
+				try {
+					movieDB movieDB = new movieDB();
+					movie changeMovie = movieDB.getMovieDTO(mvID.getText());
+					if (changeMovie.getMvMovieTitle() == null) {
+						JOptionPane.showMessageDialog(null, "해당하는 영화 아이디가 없습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+						ui.update_UI("movie_manage");
 						break;
 					}
+					if (mvMovieTitle.getText().equals("") && mvDirector.getText().equals("")
+							&& mvActor.getText().equals("") && mvGrade.getText().equals("")
+							&& mvInfo.getText().equals("")) {
+						JOptionPane.showMessageDialog(null, "아무 수정 사항이 없습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+						ui.update_UI("movie_manage");
+						break;
+					}
+
+					if (!mvMovieTitle.getText().equals(""))
+						changeMovie.setMvMovieTitle(mvMovieTitle.getText());
+					if (!mvDirector.getText().equals(""))
+						changeMovie.setMvDirector(mvDirector.getText());
+					if (!mvActor.getText().equals(""))
+						changeMovie.setMvActor(mvActor.getText());
+					if (!mvGrade.getText().equals(""))
+						changeMovie.setMvGrade(mvGrade.getText());
+					if (!mvInfo.getText().equals(""))
+						changeMovie.setMvInfo(mvInfo.getText());
+
+					boolean torf = movieDB.updateMovie(changeMovie);
+
+					if (torf)
+						JOptionPane.showMessageDialog(null, "영화를 수정하였습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
+					else
+						JOptionPane.showMessageDialog(null, "영화수정을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "영화수정을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+					System.out.println(e1.toString());
 				}
-				
-//				try {
-//					movie new_movie = new movie();
-//					new_movie.setMvID(mvID.getText());
-//					new_movie.setMvMovieTitle(mvMovieTitle.getText());
-//					new_movie.setMvDirector(mvDirector.getText());
-//					new_movie.setMvActor(mvActor.getText());
-//					new_movie.setMvGrade(mvGrade.getText());
-//					new_movie.setMvInfo(mvInfo.getText());
-//
-//					movieDB movieDB = new movieDB();
-//					movieDB.getConn();
-//					boolean torf = movieDB.insertMovie(new_movie);
-//					if(torf)
-//						JOptionPane.showMessageDialog(null, "영화가 등록 되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
-//					else
-//						JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
-//						
-//				} catch (Exception e1) {
-//					JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
-//					System.out.println(e1.toString());
-//				}
 				ui.update_UI("movie_manage");
 				break;
 			case "취소":

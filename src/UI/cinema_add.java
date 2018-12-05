@@ -11,215 +11,154 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import Cinema.cinema;
+import Cinema.cinemaDB;
 import Movie.movie;
 import Movie.movieDB;
-import UI.movie_info_UI.MyActionListener;
 
 public class cinema_add extends JPanel {
-	JTextField mvID, mvMovieTitle, mvDirector, mvActor, mvGrade, mvInfo;
-	UI_Main ui;
-	JButton ok, cancel;
+   JTextField cNAME, cAddress, cPhoneNum;
+   UI_Main ui;
+   JButton ok, cancel;
 
-	public cinema_add(UI_Main ui) {
-		this.ui = ui;
-		// 레이아웃 설정
-		setLayout(null);
+   public cinema_add(UI_Main ui) {
+      this.ui = ui;
+      // 레이아웃 설정
+      setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("Resource/cinema_add.png"));
-		lblNewLabel.setBounds(0, 0, 1024, 768);
+      JLabel lblNewLabel = new JLabel("");
+      lblNewLabel.setIcon(new ImageIcon("Resource/cinema_add.png"));
+      lblNewLabel.setBounds(0, 0, 1024, 768);
 
-		// 영화 아이디 필드
-		mvID = new JTextField(20);
-		mvID.setBounds(360, 198, 470, 55);
-		mvID.setOpaque(false);
-		mvID.setForeground(Color.WHITE);
-		mvID.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		mvID.setCaretColor(Color.white);
+      // 이름필드
+      cNAME = new JTextField(20);
+      cNAME.setBounds(360, 198, 470, 55);
+      cNAME.setOpaque(false);
+      cNAME.setForeground(Color.WHITE);
+      cNAME.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+      cNAME.setCaretColor(Color.white);
 
-		// 영화 제목 필드
-		mvMovieTitle = new JTextField(20);
-		mvMovieTitle.setBounds(360, 275, 470, 55);
-		mvMovieTitle.setOpaque(false);
-		mvMovieTitle.setForeground(Color.WHITE);
-		mvMovieTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		mvMovieTitle.setCaretColor(Color.white);
+      // 주소필드
+      cAddress = new JTextField(20);
+      cAddress.setBounds(360, 275, 470, 55);
+      cAddress.setOpaque(false);
+      cAddress.setForeground(Color.WHITE);
+      cAddress.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+      cAddress.setCaretColor(Color.white);
 
-		// 감독 필드
-		mvDirector = new JTextField(20);
-		mvDirector.setOpaque(false);
-		mvDirector.setBounds(360, 349, 470, 55);
-		mvDirector.setForeground(Color.WHITE);
-		mvDirector.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		mvDirector.setCaretColor(Color.white);
+      // 전화번호필드
+      cPhoneNum = new JTextField(20);
+      cPhoneNum.setOpaque(false);
+      cPhoneNum.setBounds(360, 349, 470, 55);
+      cPhoneNum.setForeground(Color.WHITE);
+      cPhoneNum.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+      cPhoneNum.setCaretColor(Color.white);
 
-		// 출연 필드
-		mvActor = new JTextField(30);
-		mvActor.setOpaque(false);
-		mvActor.setBounds(360, 425, 470, 55);
-		mvActor.setForeground(Color.WHITE);
-		mvActor.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		mvActor.setCaretColor(Color.white);
+      
+      // 저장버튼 추가
+      ok = new JButton("저장");
+      ok.setBackground(new Color(114, 137, 218));
+      ok.setForeground(Color.WHITE);
+      ok.setBounds(105, 647, 350, 60);
+      ok.setBorderPainted(false);
+      ok.setFocusPainted(false);
 
-		// 등급 필드
-		mvGrade = new JTextField(10);
-		mvGrade.setOpaque(false);
-		mvGrade.setBounds(360, 499, 470, 55);
-		mvGrade.setForeground(Color.WHITE);
-		mvGrade.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		mvGrade.setCaretColor(Color.white);
+      // 취소버튼 추가
+      cancel = new JButton("취소");
+      cancel.setBackground(new Color(114, 137, 218));
+      cancel.setForeground(Color.WHITE);
+      cancel.setBounds(510, 647, 350, 60);
+      cancel.setBorderPainted(false);
+      cancel.setFocusPainted(false);
 
-		// 주요정보 필드
-		mvInfo = new JTextField(30);
-		mvInfo.setOpaque(false);
-		mvInfo.setBounds(360, 573, 470, 55);
-		mvInfo.setForeground(Color.WHITE);
-		mvInfo.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		mvInfo.setCaretColor(Color.white);
-		
-		// 저장버튼 추가
-		ok = new JButton("저장");
-		ok.setBackground(new Color(114, 137, 218));
-		ok.setForeground(Color.WHITE);
-		ok.setBounds(105, 647, 350, 60);
-		ok.setBorderPainted(false);
-		ok.setFocusPainted(false);
+      add(cNAME);
+      add(cAddress);
+      add(cPhoneNum);
+      add(cancel);
+      add(ok);
+      add(lblNewLabel);
+      cNAME.addActionListener(new MyActionListener());
+      cAddress.addActionListener(new MyActionListener());
+      cPhoneNum.addActionListener(new MyActionListener());
+      ok.addActionListener(new MyActionListener());
+      cancel.addActionListener(new MyActionListener());
+   }
 
-		// 취소버튼 추가
-		cancel = new JButton("취소");
-		cancel.setBackground(new Color(114, 137, 218));
-		cancel.setForeground(Color.WHITE);
-		cancel.setBounds(510, 647, 350, 60);
-		cancel.setBorderPainted(false);
-		cancel.setFocusPainted(false);
+   class MyActionListener implements ActionListener {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+         switch (e.getActionCommand()) {
+         case "저장":
+            
+            if (cNAME.getText().isEmpty()) {
+               JOptionPane.showMessageDialog(null, "영화관 이름을 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+               break;
+            } else {
+               if (isStringDouble(cNAME.getText()) != false) {
+                  JOptionPane.showMessageDialog(null, "영화관 이름을 글자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+                  break;
+               }
+            }
 
-		add(mvID);
-		add(mvMovieTitle);
-		add(mvDirector);
-		add(mvActor);
-		add(mvGrade);
-		add(mvInfo);
-		add(cancel);
-		add(ok);
-		add(lblNewLabel);
-		mvID.addActionListener(new MyActionListener());
-		mvMovieTitle.addActionListener(new MyActionListener());
-		mvDirector.addActionListener(new MyActionListener());
-		mvActor.addActionListener(new MyActionListener());
-		mvGrade.addActionListener(new MyActionListener());
-		mvInfo.addActionListener(new MyActionListener());
-		ok.addActionListener(new MyActionListener());
-		cancel.addActionListener(new MyActionListener());
-	}
+            
+            if (cAddress.getText().isEmpty()) {
+               JOptionPane.showMessageDialog(null, "영화관 주소를 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+               break;
+            }else {
+               if (isStringDouble(cAddress.getText()) != false) {
+                  JOptionPane.showMessageDialog(null, "영화관 주소는 글자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+                  break;
+               }
+            }
 
-	class MyActionListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			switch (e.getActionCommand()) {
-			case "저장":
-				// 영화 아이디 예외처리
-				if (mvID.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "영화 아이디를 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
-					break;
-				} else {
-					if (isStringDouble(mvID.getText()) != false) {
-						JOptionPane.showMessageDialog(null, "영화 아이디는 글자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
-						break;
-					}
-				}
+            
+            if (cPhoneNum.getText().isEmpty()) {
+               JOptionPane.showMessageDialog(null, "영화관 전화번호를 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+               break;
+            } else {
+               if (isStringDouble(cPhoneNum.getText()) == true) {
+                  JOptionPane.showMessageDialog(null, "영화관 전화번호는 숫자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+                  break;
+               }
+            }
 
-				// 영화 제목 예외처리
-				if (mvMovieTitle.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "영화 제목을 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
-					break;
-				}
+            
+            
+            try {
+               cinema new_cinema = new cinema();
+               new_cinema.setcNAME(cNAME.getText());
+               new_cinema.setcAddress(cAddress.getText());
+               new_cinema.setcPhoneNum(cPhoneNum.getText());
+               
 
-				// 감독 예외처리
-				if (mvDirector.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "감독이름을 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
-					break;
-				} else {
-					if (isStringDouble(mvDirector.getText()) == true) {
-						JOptionPane.showMessageDialog(null, "감독이름은 글자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
-						break;
-					}
-				}
+               cinemaDB cinemaDB = new cinemaDB();
+               cinemaDB.getConn();
+               boolean torf = cinemaDB.insertCinema(new_cinema);
+               if(torf)
+                  JOptionPane.showMessageDialog(null, "영화관이 등록 되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
+               else
+                  JOptionPane.showMessageDialog(null, "영화관등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+                  
+            } catch (Exception e1) {
+               JOptionPane.showMessageDialog(null, "영화관등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+               System.out.println(e1.toString());
+            }
+            ui.update_UI("cinema_manage");
+            break;
+         case "취소":
+            ui.update_UI("cinema_manage");
+            break;
+         }
+      }
 
-				// 출연 예외처리
-				if (mvActor.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "출연자를 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
-					break;
-				} else {
-					if (isStringDouble(mvActor.getText()) == true) {
-						JOptionPane.showMessageDialog(null, "출연자는 글자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
-						break;
-					}
-				}
-
-				// 등급 예외처리
-				if (mvGrade.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "등급을 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
-					break;
-				} else {
-					if (isStringDouble(mvGrade.getText()) == false) {
-						JOptionPane.showMessageDialog(null, "등급은 숫자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
-						break;
-					} else {
-						if (mvGrade.getText().length() != 2) {
-							JOptionPane.showMessageDialog(null, "등급은 2자리로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
-							break;
-						}
-					}
-				}
-
-				// 주요 정보 예외처리
-				if (mvInfo.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "주요정보를 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
-					break;
-				} else {
-					if (isStringDouble(mvInfo.getText()) == true) {
-						JOptionPane.showMessageDialog(null, "주요정보는 글자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
-						break;
-					}
-				}
-				
-				try {
-					movie new_movie = new movie();
-					new_movie.setMvID(mvID.getText());
-					new_movie.setMvMovieTitle(mvMovieTitle.getText());
-					new_movie.setMvDirector(mvDirector.getText());
-					new_movie.setMvActor(mvActor.getText());
-					new_movie.setMvGrade(mvGrade.getText());
-					new_movie.setMvInfo(mvInfo.getText());
-
-					movieDB movieDB = new movieDB();
-					movieDB.getConn();
-					boolean torf = movieDB.insertMovie(new_movie);
-					if(torf)
-						JOptionPane.showMessageDialog(null, "영화가 등록 되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
-					else
-						JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
-						
-				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
-					System.out.println(e1.toString());
-				}
-				ui.update_UI("cinema_manage");
-				break;
-			case "취소":
-				ui.update_UI("cinema_manage");
-				break;
-			}
-		}
-
-		public boolean isStringDouble(String s) {
-			try {
-				Double.parseDouble(s);
-				return true;
-			} catch (NumberFormatException e) {
-				return false;
-			}
-		}
-	}
+      public boolean isStringDouble(String s) {
+         try {
+            Double.parseDouble(s);
+            return true;
+         } catch (NumberFormatException e) {
+            return false;
+         }
+      }
+   }
 
 }

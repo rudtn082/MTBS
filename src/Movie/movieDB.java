@@ -147,22 +147,24 @@ public class movieDB {
 
 	// 영화 정보 수정
 	public boolean updateMovie(movie movie) {
-		System.out.println("dto=" + movie.toString());
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
 			con = getConn();
-			String sql = "update movie set ID =?, TheaterID=?, MovieTitle=?, Director=?, Actor=?, Grade=?, Info=?, AccumulateNum=? "
+			String sql = "update movie set ID=?, theaterID=?, MovieTitle=?, Director=?, Actor=?, Grade=?, Info=?, AccumulateNum=?"
 					+ "where ID=?";
 			ps = con.prepareStatement(sql);
+			
 			ps.setString(1, movie.getMvID());
-			ps.setString(2,  movie.getMvTheaterID());
+			ps.setString(2, movie.getMvTheaterID());
 			ps.setString(3, movie.getMvMovieTitle());
 			ps.setString(4, movie.getMvDirector());
 			ps.setString(5, movie.getMvActor());
 			ps.setString(6, movie.getMvGrade());
 			ps.setString(7, movie.getMvInfo());
-			ps.setString(8,  movie.getMvAccumulateNum());			
+			ps.setString(8, movie.getMvAccumulateNum());
+			ps.setString(9, movie.getMvID());
+			
 			int r = ps.executeUpdate(); // 실행 -> 수정
 			// 1~n: 성공 , 0 : 실패
 			

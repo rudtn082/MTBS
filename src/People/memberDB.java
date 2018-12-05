@@ -141,7 +141,6 @@ public class memberDB {
 
 	// 회원정보 수정
 	public boolean updateMember(member member) {
-		System.out.println("dto=" + member.toString());
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
@@ -157,6 +156,8 @@ public class memberDB {
 			ps.setString(5, member.getmAddress());
 			ps.setString(6, member.getmPN());
 			ps.setString(7, member.getmticket());
+			ps.setString(8, member.getmID());
+			ps.setString(9, member.getmPW());
 			
 			int r = ps.executeUpdate(); // 실행 -> 수정
 			// 1~n: 성공 , 0 : 실패

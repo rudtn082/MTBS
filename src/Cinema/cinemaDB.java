@@ -94,7 +94,7 @@ public class cinemaDB {
 		return data;
 	}
 
-	// 회원 등록
+	// 영화관 등록
 	public boolean insertCinema(cinema cinema) {
 		Connection con = null; // 연결
 		PreparedStatement ps = null; // 명령
@@ -125,7 +125,7 @@ public class cinemaDB {
 		return false;
 	}
 
-	// 회원정보 수정
+	// 영화관 정보 수정
 	public boolean updateCinema(cinema cinema) {
 		System.out.println("dto=" + cinema.toString());
 		Connection con = null;
@@ -139,6 +139,7 @@ public class cinemaDB {
 			ps.setString(1, cinema.getcNAME());
 			ps.setString(2, cinema.getcAddress());
 			ps.setString(3, cinema.getcPhoneNum());
+			ps.setString(4, cinema.getcNAME());
 			
 
 			int r = ps.executeUpdate(); // 실행 -> 수정
@@ -155,7 +156,7 @@ public class cinemaDB {
 		return true;
 	}
 
-	// 회원 삭제
+	// 영화관 삭제
 	public boolean deleteCinema(String name) {
 		Connection con = null;
 		PreparedStatement ps = null;

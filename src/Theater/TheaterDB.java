@@ -31,7 +31,7 @@ public class TheaterDB {
 		return con;
 	}
 
-	// 한사람의 회원 정보 가져오기
+	// 한 상영관 회원 정보 가져오기
 	public theater getTheaterDTO(String id) {
 
 		theater theater = new theater();
@@ -62,7 +62,7 @@ public class TheaterDB {
 		return theater;
 	}
 
-	// 멤버리스트 출력
+	// 상영관 리스트 출력
 	public Vector getTheaterList() {
 
 		Vector data = new Vector(); // Jtable에 값을 쉽게 넣는 방법 1. 2차원배열 2. Vector 에 vector추가
@@ -99,7 +99,7 @@ public class TheaterDB {
 		return data;
 	}
 
-	// 회원 등록
+	// 상영관 등록
 	public boolean insertTheater(theater theater) {
 		Connection con = null; // 연결
 		PreparedStatement ps = null; // 명령
@@ -131,7 +131,7 @@ public class TheaterDB {
 		return false;
 	}
 
-	// 회원정보 수정
+	// 상영관 정보 수정
 	public boolean updateTheater(theater theater) {
 		System.out.println("dto=" + theater.toString());
 		Connection con = null;
@@ -147,6 +147,7 @@ public class TheaterDB {
 			ps.setString(3, theater.gettSeatNum());
 			ps.setString(4, theater.gettMovieID());
 			ps.setString(5, theater.gettStartTime());
+			ps.setString(6, theater.gettTheaterID());
 			
 			int r = ps.executeUpdate(); // 실행 -> 수정
 			// 1~n: 성공 , 0 : 실패
@@ -162,7 +163,7 @@ public class TheaterDB {
 		return true;
 	}
 
-	// 회원 삭제
+	// 상영관 삭제
 	public boolean deleteTheater(String TheaterID) {
 		Connection con = null;
 		PreparedStatement ps = null;

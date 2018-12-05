@@ -73,28 +73,25 @@ public class movie_delete extends JPanel {
 					JOptionPane.showMessageDialog(null, "영화 아이디를 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
 					break;
 				} else {
-					if (isStringDouble(mvID.getText()) != false) {
-						JOptionPane.showMessageDialog(null, "영화 아이디는 글자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+					if (isStringDouble(mvID.getText()) == false) {
+						JOptionPane.showMessageDialog(null, "영화 아이디는 숫자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
 						break;
 					}
 				}
 				
-//				try {
-//					movie new_movie = new movie();
-//					new_movie.setMvID(mvID.getText());
-//
-//					movieDB movieDB = new movieDB();
-//					movieDB.getConn();
-//					boolean torf = movieDB.insertMovie(new_movie);
-//					if(torf)
-//						JOptionPane.showMessageDialog(null, "영화가 등록 되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
-//					else
-//						JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
-//						
-//				} catch (Exception e1) {
-//					JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
-//					System.out.println(e1.toString());
-//				}
+				try {
+					movieDB movieDB = new movieDB();
+					boolean torf = movieDB.deleteMovie(mvID.getText());
+
+					if(torf)
+						JOptionPane.showMessageDialog(null, "영화가 삭제 되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
+					else
+						JOptionPane.showMessageDialog(null, "영화삭제를 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+						
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "영화삭제를 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+					System.out.println(e1.toString());
+				}
 				ui.update_UI("movie_manage");
 				break;
 			case "취소":

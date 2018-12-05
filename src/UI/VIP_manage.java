@@ -176,7 +176,7 @@ public class VIP_manage extends JPanel {
 
 			try {
 				con = getConn();
-				String sql = "select ID, Name, ticket from member order by ticket desc LIMIT 10 ";
+				String sql = "select ID, Name, ticket from member order by ticket+0 desc LIMIT 10 ";
 				ps = con.prepareStatement(sql);
 				rs = ps.executeQuery();
 
