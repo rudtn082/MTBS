@@ -146,7 +146,7 @@ public class memberDB {
 		try {
 			con = getConn();
 			String sql = "update member set ID=?, PW=?, Name=?, DOB=?, Address=?, PN=?, ticket=?"
-					+ "where ID=? and PW=?";
+					+ "where ID=?";
 			ps = con.prepareStatement(sql);
 
 			ps.setString(1, member.getmID());
@@ -157,7 +157,6 @@ public class memberDB {
 			ps.setString(6, member.getmPN());
 			ps.setString(7, member.getmticket());
 			ps.setString(8, member.getmID());
-			ps.setString(9, member.getmPW());
 			
 			int r = ps.executeUpdate(); // 실행 -> 수정
 			// 1~n: 성공 , 0 : 실패

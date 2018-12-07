@@ -23,7 +23,7 @@ import People.memberDB;
 import Seat.seatDB;
 
 public class movie_reservation extends JPanel {
-	JButton movie_search, movie_reserv, logout, dropout;
+	JButton movie_search, movie_reserv, logout, memberInfo;
 	UI_Main ui;
 	JButton ok, cancel;
 	JComboBox seatCombo;
@@ -185,12 +185,12 @@ public class movie_reservation extends JPanel {
 		logout.setForeground(Color.WHITE);
 		logout.setBounds(520, 23, 200, 55);
 
-		// 회원탈퇴 버튼 추가
-		dropout = new JButton("회원탈퇴");
-		dropout.setContentAreaFilled(false);
-		dropout.setFocusPainted(false);
-		dropout.setForeground(Color.WHITE);
-		dropout.setBounds(770, 23, 200, 55);
+		// 회원관리 버튼 추가
+		memberInfo = new JButton("회원관리");
+		memberInfo.setContentAreaFilled(false);
+		memberInfo.setFocusPainted(false);
+		memberInfo.setForeground(Color.WHITE);
+		memberInfo.setBounds(770, 23, 200, 55);
 
 		// 예약버튼 추가
 		ok = new JButton("예약");
@@ -211,14 +211,14 @@ public class movie_reservation extends JPanel {
 		add(movie_search);
 		add(movie_reserv);
 		add(logout);
-		add(dropout);
+		add(memberInfo);
 		add(ok);
 		add(cancel);
 		add(lblNewLabel);
 		movie_search.addActionListener(new MyActionListener());
 		movie_reserv.addActionListener(new MyActionListener());
 		logout.addActionListener(new MyActionListener());
-		dropout.addActionListener(new MyActionListener());
+		memberInfo.addActionListener(new MyActionListener());
 		ok.addActionListener(new MyActionListener());
 		cancel.addActionListener(new MyActionListener());
 	}
@@ -237,22 +237,8 @@ public class movie_reservation extends JPanel {
 				JOptionPane.showMessageDialog(null, "로그아웃 되었습니다.", "메세지", JOptionPane.INFORMATION_MESSAGE);
 				ui.update_UI("Login");
 				break;
-			case "회원탈퇴":
-				try {
-					int result = JOptionPane.showConfirmDialog(null, "탈퇴 하시겠습니까?", "메세지", JOptionPane.WARNING_MESSAGE);
-					if (result == JOptionPane.YES_OPTION) {
-						member member = ui.getmember();
-						memberDB memberDB = new memberDB();
-						memberDB.deleteMember(member.getmID(), member.getmPW());
-						JOptionPane.showMessageDialog(null, "탈퇴 성공!", "메세지", JOptionPane.INFORMATION_MESSAGE);
-						ui.update_UI("Login");
-					}
-					break;
-				} catch (Exception e1) {
-					System.out.println(e1.toString());
-					JOptionPane.showMessageDialog(null, "탈퇴를 실패했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
-					break;
-				}
+			case "회원관리":
+				ui.update_UI("member_Main");
 			case "예약":
 				System.out.println("예약버튼");
 				break;

@@ -35,6 +35,8 @@ public class UI_Main extends JFrame {
 		cinema_delete cinema_delete = new cinema_delete(this);
 		cinema_change cinema_change = new cinema_change(this);
 		cinema_add cinema_add = new cinema_add(this);
+		member_main member_main = new member_main(this);
+		member_change member_change = new member_change(this);
 		switch(panelName) {
 		case "Login":
 			getContentPane().removeAll();
@@ -123,6 +125,18 @@ public class UI_Main extends JFrame {
 		case "cinema_add":
 			getContentPane().removeAll();
 			getContentPane().add(cinema_add);
+			revalidate();
+			repaint();
+			break;
+		case "member_Main":
+			getContentPane().removeAll();
+			getContentPane().add(member_main);
+			revalidate();
+			repaint();
+			break;
+		case "member_change":
+			getContentPane().removeAll();
+			getContentPane().add(member_change);
 			revalidate();
 			repaint();
 			break;
