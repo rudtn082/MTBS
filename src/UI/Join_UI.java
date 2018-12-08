@@ -192,6 +192,7 @@ public class Join_UI extends JPanel {
 					new_member.setmAddress(address.getText());
 					new_member.setmPN(PN.getText());
 					new_member.setmticket("0");
+					new_member.setMpoint("0");
 
 					memberDB memberDB = new memberDB();
 					memberDB.getConn();

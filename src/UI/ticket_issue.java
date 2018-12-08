@@ -3,38 +3,60 @@ package UI;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import People.memberDB;
+import Booking.book;
+import Booking.bookDB;
+import Payment.pay;
+import Payment.payDB;
 
-public class VIP_manage extends JPanel {
+public class ticket_issue extends JPanel {
 	JButton movie_manage, cinema_manage, VIP_manage, ticket_manage, re;
 	UI_Main ui;
 	JLabel sID;
+	
+	JLabel[] row;
+	JLabel[] row2;
+	JLabel[] row3;
+	JButton[] approve;
 
-	public VIP_manage(UI_Main ui) {
+	public ticket_issue(UI_Main ui) {
 		this.ui = ui;
 		// 레이아웃 설정
 		setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("Resource/VIP_manage.png"));
+		lblNewLabel.setIcon(new ImageIcon("Resource/ticket_issue.png"));
 		lblNewLabel.setBounds(0, 0, 1024, 768);
 
-		ArrayList<ArrayList> vipMember = new ArrayList<>();
-		VIP_take VIP_take = new VIP_take();
-		vipMember = VIP_take.getVIPList();
+		
+		bookDB bookDB = new bookDB();
+		payDB payDB = new payDB();
+		
+		ArrayList bookList = bookDB.getbookList();
+		ArrayList payList = payDB.getpayList();
+		ArrayList<ArrayList> array = new ArrayList<ArrayList>();
+		for(int i = 0; i < payList.size(); i++) {
+			ArrayList<String> temparray = new ArrayList<String>();
+			if(((String)((ArrayList)payList.get(i)).get(3)).equals("2")) {
+				temparray.add((String)((ArrayList)bookList.get(i)).get(1));
+				temparray.add((String)((ArrayList)bookList.get(i)).get(0));
+				temparray.add((String)((ArrayList)payList.get(i)).get(2));
+				array.add(temparray);
+			}
+		}
 
-		String[][] a = new String[vipMember.size()][3];
+		System.out.println(array);
+		
+		
+		
+		String[][] a = new String[array.size()][3];
 		for (int i = 0; i < a.length; i++) {
 			for (int j = 0; j < a[i].length; j++) {
 				a[i][j] = new String();
@@ -43,30 +65,52 @@ public class VIP_manage extends JPanel {
 
 		for (int i = 0; i < a.length; i++) {
 			for (int j = 0; j < a[i].length; j++) {
-				a[i][j] = (String) vipMember.get(i).get(j);
+				a[i][j] = (String) array.get(i).get(j);
 			}
 		}
 
 		// row
-		JLabel[] row = new JLabel[vipMember.size()];
-		JLabel[] row2 = new JLabel[vipMember.size()];
-		JLabel[] row3 = new JLabel[vipMember.size()];
+		row = new JLabel[array.size()];
+		row2 = new JLabel[array.size()];
+		row3 = new JLabel[array.size()];
+		approve = new JButton[array.size()];
 		for (int i = 0; i < a.length; i++) {
 			int j = 0;
 			row[i] = new JLabel(a[i][j]);
-			row[i].setBounds(165, 198 + (i * 19), 470, 55);
+			row[i].setBounds(110, 210 + (i * 40), 470, 55);
 			row[i].setForeground(Color.WHITE);
 
 			row2[i] = new JLabel(a[i][j + 1]);
-			row2[i].setBounds(450, 198 + (i * 19), 470, 55);
+			row2[i].setBounds(260, 210 + (i * 40), 470, 55);
 			row2[i].setForeground(Color.WHITE);
 
 			row3[i] = new JLabel(a[i][j + 2]);
-			row3[i].setBounds(800, 198 + (i * 19), 470, 55);
+			row3[i].setBounds(440, 210 + (i * 40), 470, 55);
 			row3[i].setForeground(Color.WHITE);
+			
+			approve[i] = new JButton(a[i][j + 1] + "번 발행");
+			approve[i].setContentAreaFilled(false);
+			approve[i].setFocusPainted(false);
+			approve[i].setForeground(Color.WHITE);
+			approve[i].setBounds(690, 223 + (i * 36), 100, 30);
+			approve[i].addActionListener(new MyActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					book book = new book();
+					pay pay = new pay();
+					pay = payDB.getpay(e.getActionCommand().substring(0, 1));
+					pay.setpayMethod("1");
+					boolean torf = payDB.updatepay(pay);
+					if(torf)
+						JOptionPane.showMessageDialog(null, "완료 되었습니다.", "메세지", JOptionPane.INFORMATION_MESSAGE);
+					else
+						JOptionPane.showMessageDialog(null, "실패 하였습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+					ui.update_UI("Main_Menu_admin");
+				}
+			});
 			add(row[i]);
 			add(row2[i]);
 			add(row3[i]);
+			add(approve[i]);
 		}
 
 		// 영화 관리 버튼 추가
@@ -116,14 +160,6 @@ public class VIP_manage extends JPanel {
 		VIP_manage.addActionListener(new MyActionListener());
 		ticket_manage.addActionListener(new MyActionListener());
 		re.addActionListener(new MyActionListener());
-
-		try {
-			memberDB memberDB = new memberDB();
-			ArrayList data = memberDB.getMemberList();
-			System.out.println(data);
-		} catch (Exception e) {
-			System.out.println(e.toString());
-		}
 	}
 
 	class MyActionListener implements ActionListener {
@@ -149,53 +185,4 @@ public class VIP_manage extends JPanel {
 		}
 	}
 
-	public class VIP_take {
-
-		public Connection getConn() {
-			Connection con = null;
-
-			try {
-				Class.forName("com.mysql.cj.jdbc.Driver"); // 1. 드라이버 로딩
-				con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/MTBS?serverTimezone=UTC&useSSL=false",
-						"MTBS", "mtbs"); // 2. 드라이버 연결
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			return con;
-		}
-
-		public ArrayList getVIPList() {
-
-			ArrayList<ArrayList> data = new ArrayList<ArrayList>(); // Jtable에 값을 쉽게 넣는 방법 1. 2차원배열 2. Vector 에 vector추가
-
-			Connection con = null; // 연결
-			PreparedStatement ps = null; // 명령
-			ResultSet rs = null; // 결과
-
-			try {
-				con = getConn();
-				String sql = "select ID, Name, ticket from member order by ticket+0 desc LIMIT 10 ";
-				ps = con.prepareStatement(sql);
-				rs = ps.executeQuery();
-
-				while (rs.next()) {
-					String mID = rs.getString("ID");
-					String mName = rs.getString("Name");
-					String mticket = rs.getString("ticket");
-
-					ArrayList<String> array = new ArrayList<String>();
-					array.add(mID);
-					array.add(mName);
-					array.add(mticket);
-
-					data.add(array);
-				} // while
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return data;
-		}
-	}
 }

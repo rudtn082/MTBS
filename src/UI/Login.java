@@ -25,8 +25,6 @@ public class Login extends JPanel {
 	JPasswordField passwordField;
 	BufferedImage img = null;
 	JButton bt, join;
-	JLabel Id, passwd;
-	JLabel la = new JLabel("No Mouse Event");
 	UI_Main ui;
 
 	public Login(UI_Main ui) {

@@ -8,6 +8,7 @@ public class member {
 	private String mAddress;
 	private String mPN;
 	private String mticket;
+	private String mpoint;
 	
 	public String getmID() {
 		return mID;
@@ -50,5 +51,11 @@ public class member {
 	}
 	public void setmticket(String mticket) {
 		this.mticket = mticket;
+	}
+	public String getMpoint() {
+		return mpoint;
+	}
+	public void setMpoint(String mpoint) {
+		this.mpoint = mpoint;
 	}
 }

@@ -1,15 +1,14 @@
 package Booking;
 
 public class book {
-   private int bookNo;
+   private String bookNo;
    private String mID;
    private String theaterID;
-   private int ticketNo;
    
-   public int getbookNo() {
+   public String getbookNo() {
       return bookNo;
    }
-   public void setbookNo(int bookNo) {
+   public void setbookNo(String bookNo) {
       this.bookNo = bookNo;
    }
    public String getmID() {
@@ -23,11 +22,5 @@ public class book {
    }
    public void setTheaterID(String theaterID) {
       this.theaterID = theaterID;
-   }
-   public int getticketNo() {
-      return ticketNo;
-   }
-   public void setticketNo(int ticketNo) {
-      this.ticketNo = ticketNo;
    }
 }

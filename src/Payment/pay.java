@@ -1,28 +1,27 @@
 package Payment;
 
 public class pay {
-   private int payNo;
-   private int bookNo;
-   private int price;
-   private String payMethod; // 포인트결제 or 현금
-   private String payType; // 인터넷결제(고객이) or 현장결제(고객이 현장에서 관리자를 통해)
+   private String payNo;
+   private String bookNo;
+   private String price;
+   private String payMethod; // 1 = 인터넷결제 및 결제완료, 2 = 현장결제(결제 후 1로 변경)
 
-   public int getpayNo() {
+   public String getpayNo() {
       return payNo;
    }
-   public void setpayNo(int payNo) {
+   public void setpayNo(String payNo) {
       this.payNo = payNo;
    }
-   public int getbookNo() {
+   public String getbookNo() {
       return bookNo;
    }
-   public void setbookNo(int bookNo) {
+   public void setbookNo(String bookNo) {
       this.bookNo = bookNo;
    }
-   public int getprice() {
+   public String getprice() {
       return price;
    }
-   public void setprice(int price) {
+   public void setprice(String price) {
       this.price = price;
    }
    public String getpayMethod() {
@@ -30,11 +29,5 @@ public class pay {
    }
    public void setpayMethod(String payMethod) {
       this.payMethod = payMethod;
-   }
-   public String getpayType() {
-      return payType;
-   }
-   public void setpayType(String payType) {
-      this.payType = payType;
    }
 }

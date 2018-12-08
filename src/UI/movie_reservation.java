@@ -15,18 +15,26 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
+import Booking.book;
+import Booking.bookDB;
 import Cinema.cinemaDB;
+import Movie.movie;
 import Movie.movieDB;
+import Payment.pay;
+import Payment.payDB;
 import People.member;
 import People.memberDB;
 import Seat.seatDB;
 
 public class movie_reservation extends JPanel {
+	JTextField usePoint;
 	JButton movie_search, movie_reserv, logout, memberInfo;
 	UI_Main ui;
 	JButton ok, cancel;
-	JComboBox seatCombo;
+	JComboBox movieCombo, seatCombo, cinemaCombo, dateCombo, timeCombo, typeCombo;
+	member member;
 
 	public movie_reservation(UI_Main ui) {
 		this.ui = ui;
@@ -36,6 +44,11 @@ public class movie_reservation extends JPanel {
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon("Resource/movie_reservation.png"));
 		lblNewLabel.setBounds(0, 0, 1024, 768);
+
+		// 맴버 가져오기 //
+		String mid = ui.getmember().getmID();
+		memberDB memberDB = new memberDB();
+		member = memberDB.getMemberDTO(mid);
 
 		// 콤보 박스 ===============================================
 		// 영화 선택 콤보 박스 생성 및 추가
@@ -64,8 +77,8 @@ public class movie_reservation extends JPanel {
 			movie[i] = list.get(i);
 		}
 
-		JComboBox movieCombo = new JComboBox();
-		movieCombo.setBounds(390, 210, 200, 30);
+		movieCombo = new JComboBox();
+		movieCombo.setBounds(220, 210, 200, 30);
 		movieCombo.setOpaque(false);
 		add(movieCombo);
 		movieCombo.setModel(new DefaultComboBoxModel(movie));
@@ -104,8 +117,8 @@ public class movie_reservation extends JPanel {
 			cinema[i] = (String) ((Vector) v2.get(i)).get(0);
 		}
 
-		JComboBox cinemaCombo = new JComboBox();
-		cinemaCombo.setBounds(390, 280, 200, 30);
+		cinemaCombo = new JComboBox();
+		cinemaCombo.setBounds(220, 280, 200, 30);
 		cinemaCombo.setOpaque(false);
 		add(cinemaCombo);
 		cinemaCombo.setModel(new DefaultComboBoxModel(cinema));
@@ -126,7 +139,7 @@ public class movie_reservation extends JPanel {
 
 		// 영화 선택 콤보 박스 생성 및 추가
 		seatCombo = new JComboBox();
-		seatCombo.setBounds(390, 355, 200, 30);
+		seatCombo.setBounds(220, 355, 200, 30);
 		seatCombo.setOpaque(false);
 		seatCombo.setModel(new DefaultComboBoxModel(seat));
 		add(seatCombo);
@@ -140,8 +153,8 @@ public class movie_reservation extends JPanel {
 		}
 
 		// 영화 선택 콤보 박스 생성 및 추가
-		JComboBox dateCombo = new JComboBox();
-		dateCombo.setBounds(390, 430, 200, 30);
+		dateCombo = new JComboBox();
+		dateCombo.setBounds(220, 430, 200, 30);
 		dateCombo.setOpaque(false);
 		add(dateCombo);
 		dateCombo.setModel(new DefaultComboBoxModel(date));
@@ -157,12 +170,40 @@ public class movie_reservation extends JPanel {
 		time[4] = "18시";
 
 		// 영화 선택 콤보 박스 생성 및 추가
-		JComboBox timeCombo = new JComboBox();
-		timeCombo.setBounds(390, 505, 200, 30);
+		timeCombo = new JComboBox();
+		timeCombo.setBounds(220, 505, 200, 30);
 		timeCombo.setOpaque(false);
 		add(timeCombo);
 		timeCombo.setModel(new DefaultComboBoxModel(time));
+		// ===========================================================
+		// 결제 유형 선택 콤보 박스 생성 및 추가
+		// 콤보 박스 년도 값 가져오기
+		String[] type = new String[2];
+
+		type[0] = "인터넷 결제";
+		type[1] = "현장 결제";
+
+		// 영화 선택 콤보 박스 생성 및 추가
+		typeCombo = new JComboBox();
+		typeCombo.setBounds(580, 210, 200, 30);
+		typeCombo.setOpaque(false);
+		add(typeCombo);
+		typeCombo.setModel(new DefaultComboBoxModel(type));
 		// 콤보 박스 ====================================================
+		// 포인트 현황
+		JLabel Point = new JLabel(member.getMpoint());
+		Point.setBounds(605, 280, 200, 30);
+		Point.setForeground(Color.WHITE);
+		add(Point);
+
+		// 포인트 사용 필드
+		usePoint = new JTextField(20);
+		usePoint.setBounds(605, 355, 200, 30);
+		usePoint.setOpaque(false);
+		usePoint.setForeground(Color.WHITE);
+		usePoint.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		usePoint.setCaretColor(Color.white);
+		add(usePoint);
 
 		// 영화 검색 버튼 추가
 		movie_search = new JButton("영화 검색");
@@ -193,7 +234,7 @@ public class movie_reservation extends JPanel {
 		memberInfo.setBounds(770, 23, 200, 55);
 
 		// 예약버튼 추가
-		ok = new JButton("예약");
+		ok = new JButton("예약 및 결제");
 		ok.setBackground(new Color(114, 137, 218));
 		ok.setForeground(Color.WHITE);
 		ok.setBounds(105, 647, 350, 60);
@@ -239,12 +280,95 @@ public class movie_reservation extends JPanel {
 				break;
 			case "회원관리":
 				ui.update_UI("member_Main");
-			case "예약":
-				System.out.println("예약버튼");
+			case "예약 및 결제":
+				// 포인트 사용 예외처리
+				if (!usePoint.getText().isEmpty()) {
+					if (isStringDouble(usePoint.getText()) == false) {
+						JOptionPane.showMessageDialog(null, "생년월일은 숫자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+						break;
+					} else {
+						if (Integer.parseInt(usePoint.getText()) < 1000 || Integer.parseInt(member.getMpoint()) < 1000) {
+							JOptionPane.showMessageDialog(null, "포인트는 1000점 이상 사용 가능합니다.", "입력 오류",
+									JOptionPane.WARNING_MESSAGE);
+							break;
+						}
+					}
+				}
+				
+				try {
+					bookDB bookDB = new bookDB();
+					payDB payDB = new payDB();
+					book book = new book();
+					pay pay = new pay();
+					
+					// 예약
+					ArrayList array = bookDB.getbookList();
+					book.setbookNo(String.valueOf(array.size()+1));
+					book.setmID(member.getmID());
+					book.setTheaterID(((String)seatCombo.getSelectedItem()).substring(0, 1));
+					boolean torf1 = bookDB.insertbook(book);
+					
+					//결제
+					ArrayList array2 = payDB.getpayList();
+					pay.setpayNo(String.valueOf(array2.size()+1));
+					pay.setbookNo(String.valueOf(array.size()+1));
+					if (!usePoint.getText().isEmpty()) {
+						pay.setprice(String.valueOf(10000-Integer.parseInt(usePoint.getText())));
+						member.setMpoint(String.valueOf(Integer.parseInt(member.getMpoint())-Integer.parseInt(usePoint.getText()))); // 포인트 차감
+						member.setmticket(String.valueOf(Integer.parseInt(member.getmticket())+1)); // 구매 횟수 +1
+						memberDB memberDB = new memberDB();
+						boolean torf3 = memberDB.updateMember(member);
+
+						if(torf3)
+							JOptionPane.showMessageDialog(null, "포인트가 차감되었습니다.", "메세지", JOptionPane.INFORMATION_MESSAGE);
+						else
+							JOptionPane.showMessageDialog(null, "포인트 차감을 실패하였습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+					}
+					else {
+						pay.setprice("10000");
+					}
+					
+					// 인터넷 결제 일 경우(바로 결제 및 예매 완료)
+					if(typeCombo.getSelectedItem().equals("인터넷 결제")) {
+						
+						pay.setpayMethod("1");
+						boolean torf2 = payDB.insertpay(pay);
+						
+						if(torf1 && torf2)
+							JOptionPane.showMessageDialog(null, "인터넷 결제가 완료되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
+						else
+							JOptionPane.showMessageDialog(null, "인터넷 결제를 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+					}
+					// 현장 결제 일 경우(관리자 승인)
+					else {
+						
+						pay.setpayMethod("2");
+						boolean torf2 = payDB.insertpay(pay);
+						
+						if(torf1 && torf2)
+							JOptionPane.showMessageDialog(null, "현장 결제가 완료되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
+						else
+							JOptionPane.showMessageDialog(null, "현장 결제를 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+					}
+						
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "예매 또는 결제를 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+					System.out.println(e1.toString());
+				}
+				ui.update_UI("Main_Menu");
 				break;
 			case "취소":
 				ui.update_UI("Main_Menu");
 			}
+		}
+	}
+
+	public boolean isStringDouble(String s) {
+		try {
+			Double.parseDouble(s);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
 		}
 	}
 

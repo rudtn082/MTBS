@@ -37,6 +37,7 @@ public class UI_Main extends JFrame {
 		cinema_add cinema_add = new cinema_add(this);
 		member_main member_main = new member_main(this);
 		member_change member_change = new member_change(this);
+		ticket_issue ticket_issue = new ticket_issue(this);
 		switch(panelName) {
 		case "Login":
 			getContentPane().removeAll();
@@ -137,6 +138,12 @@ public class UI_Main extends JFrame {
 		case "member_change":
 			getContentPane().removeAll();
 			getContentPane().add(member_change);
+			revalidate();
+			repaint();
+			break;
+		case "ticket_issue":
+			getContentPane().removeAll();
+			getContentPane().add(ticket_issue);
 			revalidate();
 			repaint();
 			break;
