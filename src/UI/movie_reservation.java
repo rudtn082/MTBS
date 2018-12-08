@@ -312,11 +312,12 @@ public class movie_reservation extends JPanel {
 					ArrayList array2 = payDB.getpayList();
 					pay.setpayNo(String.valueOf(array2.size()+1));
 					pay.setbookNo(String.valueOf(array.size()+1));
+					member.setmticket(String.valueOf(Integer.parseInt(member.getmticket())+1)); // 구매 횟수 +1
+					memberDB memberDB = new memberDB();
+					memberDB.updateMember(member);
 					if (!usePoint.getText().isEmpty()) {
 						pay.setprice(String.valueOf(10000-Integer.parseInt(usePoint.getText())));
 						member.setMpoint(String.valueOf(Integer.parseInt(member.getMpoint())-Integer.parseInt(usePoint.getText()))); // 포인트 차감
-						member.setmticket(String.valueOf(Integer.parseInt(member.getmticket())+1)); // 구매 횟수 +1
-						memberDB memberDB = new memberDB();
 						boolean torf3 = memberDB.updateMember(member);
 
 						if(torf3)
@@ -328,6 +329,7 @@ public class movie_reservation extends JPanel {
 						pay.setprice("10000");
 					}
 					
+					memberDB.updateMember(member);
 					// 인터넷 결제 일 경우(바로 결제 및 예매 완료)
 					if(typeCombo.getSelectedItem().equals("인터넷 결제")) {
 						
