@@ -38,6 +38,8 @@ public class UI_Main extends JFrame {
 		member_main member_main = new member_main(this);
 		member_change member_change = new member_change(this);
 		ticket_issue ticket_issue = new ticket_issue(this);
+		check_reservation check_reservation = new check_reservation(this);
+		cancel_reservation cancel_reservation = new cancel_reservation(this);
 		switch(panelName) {
 		case "Login":
 			getContentPane().removeAll();
@@ -144,6 +146,18 @@ public class UI_Main extends JFrame {
 		case "ticket_issue":
 			getContentPane().removeAll();
 			getContentPane().add(ticket_issue);
+			revalidate();
+			repaint();
+			break;
+		case "check_reservation":
+			getContentPane().removeAll();
+			getContentPane().add(check_reservation);
+			revalidate();
+			repaint();
+			break;
+		case "cancel_reservation":
+			getContentPane().removeAll();
+			getContentPane().add(cancel_reservation);
 			revalidate();
 			repaint();
 			break;

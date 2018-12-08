@@ -153,6 +153,8 @@ public class movie_search extends JPanel {
 				break;
 			case "회원관리":
 				ui.update_UI("member_Main");
+			case "돌아가기":
+				ui.update_UI("Main_Menu");
 			}
 		}
 	}

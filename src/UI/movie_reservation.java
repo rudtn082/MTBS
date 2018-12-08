@@ -32,7 +32,7 @@ public class movie_reservation extends JPanel {
 	JTextField usePoint;
 	JButton movie_search, movie_reserv, logout, memberInfo;
 	UI_Main ui;
-	JButton ok, cancel;
+	JButton ok, cancel, cancel_reservation, check_reservation;
 	JComboBox movieCombo, seatCombo, cinemaCombo, dateCombo, timeCombo, typeCombo;
 	member member;
 
@@ -249,12 +249,30 @@ public class movie_reservation extends JPanel {
 		cancel.setBorderPainted(false);
 		cancel.setFocusPainted(false);
 
+		//영화취소버튼 추가
+		cancel_reservation = new JButton("예약취소");
+		cancel_reservation.setBackground(new Color(114, 137, 218));
+		cancel_reservation.setForeground(Color.WHITE);
+		cancel_reservation.setBounds(510, 495, 150, 40);
+		cancel_reservation.setBorderPainted(false);
+		cancel_reservation.setFocusPainted(false);
+		
+		//영화예약확인 버튼 추가
+		check_reservation = new JButton("예약확인");
+		check_reservation.setBackground(new Color(114, 137, 218));
+		check_reservation.setForeground(Color.WHITE);
+		check_reservation.setBounds(510, 425, 150, 40);
+		check_reservation.setBorderPainted(false);
+		check_reservation.setFocusPainted(false);
+		
 		add(movie_search);
 		add(movie_reserv);
 		add(logout);
 		add(memberInfo);
 		add(ok);
 		add(cancel);
+		add(cancel_reservation);
+		add(check_reservation);
 		add(lblNewLabel);
 		movie_search.addActionListener(new MyActionListener());
 		movie_reserv.addActionListener(new MyActionListener());
@@ -262,12 +280,20 @@ public class movie_reservation extends JPanel {
 		memberInfo.addActionListener(new MyActionListener());
 		ok.addActionListener(new MyActionListener());
 		cancel.addActionListener(new MyActionListener());
+		cancel_reservation.addActionListener(new MyActionListener());
+		check_reservation.addActionListener(new MyActionListener());
 	}
 
 	class MyActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			switch (e.getActionCommand()) {
+			case "예약확인":
+				ui.update_UI("check_reservation");
+				break;
+			case "예약취소":
+				ui.update_UI("cancel_reservation");
+				break;
 			case "영화 검색":
 				ui.update_UI("movie_search");
 				break;
