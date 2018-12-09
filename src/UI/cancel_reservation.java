@@ -68,7 +68,7 @@ public class cancel_reservation extends JPanel {
 	}
 
 	class MyActionListener implements ActionListener {
-		boolean isCancel;
+		boolean isCancel= false;
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -98,9 +98,12 @@ public class cancel_reservation extends JPanel {
 						}
 					}
 				}
+				else {
+					JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+				}
 			case "돌아가기":
 				ui.update_UI("Main_Menu");
-
+				
 			}
 		}
 	}
