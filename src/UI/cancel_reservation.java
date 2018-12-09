@@ -41,7 +41,7 @@ public class cancel_reservation extends JPanel {
 		bookNO.setOpaque(false);
 		bookNO.setForeground(Color.WHITE);
 		bookNO.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		bookNO.setCaretColor(Color.white);
+		bookNO.setCaretColor(Color.BLACK);
 
 		ok = new JButton("예약 취소");
 		ok.setBackground(new Color(114, 137, 218));
@@ -81,21 +81,25 @@ public class cancel_reservation extends JPanel {
 						JOptionPane.showMessageDialog(null, "예약번호는 숫자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
 						break;
 					} else {
-						bookDB bookDB = new bookDB();
-						member member = ui.getmember();
-						String mID = member.getmID();
-						isCancel = bookDB.deleteBook(bookNO.getText(), mID);
+						try {
+							bookDB bookDB = new bookDB();
+							member member = ui.getmember();
+							String mID = member.getmID();
+							isCancel = bookDB.deleteBook(bookNO.getText(), mID);
+							if (isCancel == true) {
+								JOptionPane.showMessageDialog(null, "취소가 완료되었습니다!", "메세지",
+										JOptionPane.INFORMATION_MESSAGE);
+							} else if (isCancel == false) {
+								JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지",
+										JOptionPane.WARNING_MESSAGE);
+							}
+						} catch (Exception e10) {
+							JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+						}
 					}
 				}
 			case "돌아가기":
 				ui.update_UI("Main_Menu");
-				break;
-			default:
-				if (isCancel == true) {
-					JOptionPane.showMessageDialog(null, "취소가 완료되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
-				} else if (isCancel == false) {
-					JOptionPane.showMessageDialog(null, "취소를 실패하였습니다", "메세지", JOptionPane.INFORMATION_MESSAGE);
-				}
 
 			}
 		}
