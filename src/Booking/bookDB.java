@@ -13,55 +13,55 @@ import javax.swing.table.DefaultTableModel;
 import People.member;
 
 public class bookDB {
-   public bookDB(){
-      
-   }
-   
-   // DB연결 메소드
-   public Connection getConn() {
-      Connection con = null;
+	public bookDB() {
 
-      try {
-         Class.forName("com.mysql.cj.jdbc.Driver"); // 1. 드라이버 로딩
-         con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/MTBS?serverTimezone=UTC&useSSL=false",
-               "MTBS", "mtbs"); // 2. 드라이버 연결
+	}
 
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
+	// DB연결 메소드
+	public Connection getConn() {
+		Connection con = null;
 
-      return con;
-   }
-   
-   // 한 예약 정보 가져오기
-   public book getbook(String bookNo) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver"); // 1. 드라이버 로딩
+			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/MTBS?serverTimezone=UTC&useSSL=false",
+					"MTBS", "mtbs"); // 2. 드라이버 연결
 
-      book book = new book();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-      Connection con = null; // 연결
-      PreparedStatement ps = null; // 명령
-      ResultSet rs = null; // 결과
+		return con;
+	}
 
-      try {
-         con = getConn();
-         String sql = "select * from book where bookNo=?";
-         ps = con.prepareStatement(sql);
-         ps.setString(1, bookNo);
+	// 한 예약 정보 가져오기
+	public book getbook(String bookNo) {
 
-         rs = ps.executeQuery();
+		book book = new book();
 
-         if (rs.next()) {
-            book.setbookNo(rs.getString("bookNo"));
-            book.setmID(rs.getString("mID"));
-            book.setTheaterID(rs.getString("theaterID"));
-         }
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
+		Connection con = null; // 연결
+		PreparedStatement ps = null; // 명령
+		ResultSet rs = null; // 결과
 
-      return book;
-   }
-   
+		try {
+			con = getConn();
+			String sql = "select * from book where bookNo=?";
+			ps = con.prepareStatement(sql);
+			ps.setString(1, bookNo);
+
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				book.setbookNo(rs.getString("bookNo"));
+				book.setmID(rs.getString("mID"));
+				book.setTheaterID(rs.getString("theaterID"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return book;
+	}
+
 	// 예약 등록
 	public boolean insertbook(book book) {
 		Connection con = null; // 연결
@@ -91,12 +91,12 @@ public class bookDB {
 
 		return false;
 	}
-	
+
 	// 리스트 출력
 	public ArrayList getbookList() {
 
 		ArrayList<ArrayList> data = new ArrayList<ArrayList>(); // Jtable에 값을 쉽게 넣는 방법 1. 2차원배열 2. Vector 에 vector추가
-		
+
 		Connection con = null; // 연결
 		PreparedStatement ps = null; // 명령
 		ResultSet rs = null; // 결과
@@ -108,9 +108,9 @@ public class bookDB {
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				    String bookNo = rs.getString("bookNo");
-				    String mID = rs.getString("mID");
-				    String theaterID = rs.getString("theaterID");
+				String bookNo = rs.getString("bookNo");
+				String mID = rs.getString("mID");
+				String theaterID = rs.getString("theaterID");
 
 				ArrayList<String> array = new ArrayList<String>();
 				array.add(bookNo);
@@ -124,4 +124,68 @@ public class bookDB {
 		}
 		return data;
 	}
+
+	// 영화예약에 쓰일 쿼리문
+	public ArrayList getCheckReservationList(String mID) {
+
+		ArrayList<ArrayList> data = new ArrayList<ArrayList>(); // Jtable에 값을 쉽게 넣는 방법 1. 2차원배열 2. Vector 에 vector추가
+
+		Connection con = null; // 연결
+		PreparedStatement ps = null; // 명령
+		ResultSet rs = null; // 결과
+
+		try {
+			con = getConn();
+			String sql = "select book.TheaterID, theater.CinemaName, theater.MovieTitle, theater.SeatNum, theater.startTime   from book, theater where book.mID = ? AND book.theaterID = theater.theaterID";
+			ps = con.prepareStatement(sql);
+			ps.setString(1, mID);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				String theaterID = rs.getString("TheaterID");
+				String CinemaName = rs.getString("CinemaName");
+				String MovieTitle = rs.getString("MovieTitle");
+				String SeatNum = rs.getString("SeatNum");
+				String startTime = rs.getString("startTime");
+
+				ArrayList<String> array = new ArrayList<String>();
+				array.add(theaterID);
+				array.add(CinemaName);
+				array.add(MovieTitle);
+				array.add(SeatNum);
+				array.add(startTime);
+				data.add(array);
+			} // while
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return data;
+	}
+
+	// 예약삭제
+	public boolean deleteBook(String bookNO, String mID) {
+		Connection con = null;
+		PreparedStatement ps = null;
+
+		try {
+			con = getConn();
+			String sql = "delete from book where bookNO=? AND mID = ?";
+
+			ps = con.prepareStatement(sql);
+			ps.setString(1, bookNO);
+		    ps.setString(2, mID);
+			int r = ps.executeUpdate(); // 실행 -> 삭제
+
+			if (r > 0)
+				return true;
+			else
+				return false;
+
+		} catch (Exception e) {
+			System.out.println(e + "-> 오류발생");
+		}
+		return true;
+	}
+	
+
 }

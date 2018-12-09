@@ -115,7 +115,7 @@ public class memberDB {
 
 		try {
 			con = getConn();
-			String sql = "insert into member(ID,PW,Name,DOB,Address,PN,ticket) values(?,?,?,?,?,?,?,?)";
+			String sql = "insert into member(ID,PW,Name,DOB,Address,PN,ticket,point) values(?,?,?,?,?,?,?,?)";
 
 			ps = con.prepareStatement(sql);
 			ps.setString(1, member.getmID());

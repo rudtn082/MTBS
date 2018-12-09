@@ -88,8 +88,10 @@ public class movie_reservation extends JPanel {
 			@Override
 			public void itemStateChanged(ItemEvent ev) {
 				seatDB seatDB = new seatDB();
+				
 				String[] seat = null;
 				Object movieName = ev.getItem();
+				
 				Vector v3 = seatDB.getSeatList(movieName.toString());
 				// TODO Auto-generated method stub
 				if (v3 != null) {
@@ -116,7 +118,7 @@ public class movie_reservation extends JPanel {
 		for (int i = 0; i < v2.size(); i++) {
 			cinema[i] = (String) ((Vector) v2.get(i)).get(0);
 		}
-
+		
 		cinemaCombo = new JComboBox();
 		cinemaCombo.setBounds(220, 280, 200, 30);
 		cinemaCombo.setOpaque(false);
