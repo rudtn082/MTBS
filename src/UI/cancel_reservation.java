@@ -89,11 +89,12 @@ public class cancel_reservation extends JPanel {
 				}
 			case "돌아가기":
 				ui.update_UI("Main_Menu");
+				break;
 			default:
 				if (isCancel == true) {
 					JOptionPane.showMessageDialog(null, "취소가 완료되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
 				} else if (isCancel == false) {
-					JOptionPane.showMessageDialog(null, "최소를 실패하였습니다", "메세지", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "취소를 실패하였습니다", "메세지", JOptionPane.INFORMATION_MESSAGE);
 				}
 
 			}

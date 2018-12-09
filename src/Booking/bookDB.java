@@ -136,13 +136,13 @@ public class bookDB {
 
 		try {
 			con = getConn();
-			String sql = "select book.TheaterID, theater.CinemaName, theater.MovieTitle, theater.SeatNum, theater.startTime   from book, theater where book.mID = ? AND book.theaterID = theater.theaterID";
+			String sql = "select book.bookNO, theater.CinemaName, theater.MovieTitle, theater.SeatNum, theater.startTime   from book, theater where book.mID = ? AND book.theaterID = theater.theaterID";
 			ps = con.prepareStatement(sql);
 			ps.setString(1, mID);
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				String theaterID = rs.getString("TheaterID");
+				String theaterID = rs.getString("bookNO");
 				String CinemaName = rs.getString("CinemaName");
 				String MovieTitle = rs.getString("MovieTitle");
 				String SeatNum = rs.getString("SeatNum");
