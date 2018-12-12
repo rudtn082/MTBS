@@ -52,7 +52,7 @@ public class TheaterDB {
 				theater.settTheaterID(rs.getString("TheaterID"));
 				theater.settCinemaName(rs.getString("CinemaName"));
 				theater.settSeatNum(rs.getString("SeatNum"));
-				theater.settMovieID(rs.getString("MovieID"));
+				theater.settMovieID(rs.getString("MovieTitle"));
 				theater.settStartTime(rs.getString("StartTime"));
 			}
 		} catch (Exception e) {

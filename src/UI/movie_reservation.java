@@ -27,6 +27,8 @@ import Payment.payDB;
 import People.member;
 import People.memberDB;
 import Seat.seatDB;
+import Theater.TheaterDB;
+import Theater.theater;
 
 public class movie_reservation extends JPanel {
 	JTextField usePoint;
@@ -88,10 +90,10 @@ public class movie_reservation extends JPanel {
 			@Override
 			public void itemStateChanged(ItemEvent ev) {
 				seatDB seatDB = new seatDB();
-				
+
 				String[] seat = null;
 				Object movieName = ev.getItem();
-				
+
 				Vector v3 = seatDB.getSeatList(movieName.toString());
 				// TODO Auto-generated method stub
 				if (v3 != null) {
@@ -118,7 +120,7 @@ public class movie_reservation extends JPanel {
 		for (int i = 0; i < v2.size(); i++) {
 			cinema[i] = (String) ((Vector) v2.get(i)).get(0);
 		}
-		
+
 		cinemaCombo = new JComboBox();
 		cinemaCombo.setBounds(220, 280, 200, 30);
 		cinemaCombo.setOpaque(false);
@@ -129,6 +131,7 @@ public class movie_reservation extends JPanel {
 		seatDB seatDB = new seatDB();
 		String[] seat = null;
 		Object movieName = movieCombo.getSelectedItem();
+
 		Vector v3 = seatDB.getSeatList(movieName.toString());
 
 		if (v3 != null) {
@@ -143,8 +146,30 @@ public class movie_reservation extends JPanel {
 		seatCombo = new JComboBox();
 		seatCombo.setBounds(220, 355, 200, 30);
 		seatCombo.setOpaque(false);
-		seatCombo.setModel(new DefaultComboBoxModel(seat));
 		add(seatCombo);
+		seatCombo.setModel(new DefaultComboBoxModel(seat));
+		
+		
+		String[] time = new String[1];
+		seatCombo.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent ev) {
+				//고른좌석번호를 불러옴
+				Object seatThNum = seatCombo.getSelectedItem();
+				String seatNum_str = seatThNum.toString();
+				
+				//고른좌석번호의 맨앞자리를 파싱해서 상영관 아이디를 알아냄
+				String seatTheaterID = seatNum_str.substring(0, 1);
+				TheaterDB tmpTheaterDB = new TheaterDB();
+				theater tmpTheater = tmpTheaterDB.getTheaterDTO(seatTheaterID);
+				
+				time[0] = tmpTheater.gettStartTime();
+
+				timeCombo.setModel(new DefaultComboBoxModel(time));
+				timeCombo.revalidate();
+				timeCombo.repaint();
+			}
+		});
 		// ===========================================================
 		// 날짜 선택 콤보 박스 생성 및 추가
 		// 콤보 박스 년도 값 가져오기
@@ -163,20 +188,30 @@ public class movie_reservation extends JPanel {
 		// ===========================================================
 		// 시간 선택 콤보 박스 생성 및 추가
 		// 콤보 박스 년도 값 가져오기
-		String[] time = new String[5];
-
-		time[0] = "10시";
-		time[1] = "12시";
-		time[2] = "14시";
-		time[3] = "16시";
-		time[4] = "18시";
+		
+		
+		/*//고른좌석번호를 불러옴
+		Object seatThNum = seatCombo.getSelectedItem();
+		String seatNum_str = seatThNum.toString();
+		
+		//고른좌석번호의 맨앞자리를 파싱해서 상영관 아이디를 알아냄
+		String seatTheaterID = seatNum_str.substring(0, 1);
+		TheaterDB tmpTheaterDB = new TheaterDB();
+		theater tmpTheater = tmpTheaterDB.getTheaterDTO(seatTheaterID);
+		
+		time[0] = tmpTheater.gettStartTime();*/
+		
 
 		// 영화 선택 콤보 박스 생성 및 추가
 		timeCombo = new JComboBox();
 		timeCombo.setBounds(220, 505, 200, 30);
 		timeCombo.setOpaque(false);
 		add(timeCombo);
-		timeCombo.setModel(new DefaultComboBoxModel(time));
+		timeCombo.setModel(new DefaultComboBoxModel(seat));
+		
+		
+	
+		
 		// ===========================================================
 		// 결제 유형 선택 콤보 박스 생성 및 추가
 		// 콤보 박스 년도 값 가져오기
@@ -251,22 +286,22 @@ public class movie_reservation extends JPanel {
 		cancel.setBorderPainted(false);
 		cancel.setFocusPainted(false);
 
-		//영화취소버튼 추가
+		// 영화취소버튼 추가
 		cancel_reservation = new JButton("예약취소");
 		cancel_reservation.setBackground(new Color(114, 137, 218));
 		cancel_reservation.setForeground(Color.WHITE);
 		cancel_reservation.setBounds(510, 495, 150, 40);
 		cancel_reservation.setBorderPainted(false);
 		cancel_reservation.setFocusPainted(false);
-		
-		//영화예약확인 버튼 추가
+
+		// 영화예약확인 버튼 추가
 		check_reservation = new JButton("예약확인");
 		check_reservation.setBackground(new Color(114, 137, 218));
 		check_reservation.setForeground(Color.WHITE);
 		check_reservation.setBounds(510, 425, 150, 40);
 		check_reservation.setBorderPainted(false);
 		check_reservation.setFocusPainted(false);
-		
+
 		add(movie_search);
 		add(movie_reserv);
 		add(logout);
@@ -315,72 +350,77 @@ public class movie_reservation extends JPanel {
 						JOptionPane.showMessageDialog(null, "생년월일은 숫자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
 						break;
 					} else {
-						if (Integer.parseInt(usePoint.getText()) < 1000 || Integer.parseInt(member.getMpoint()) < 1000) {
+						if (Integer.parseInt(usePoint.getText()) < 1000
+								|| Integer.parseInt(member.getMpoint()) < 1000) {
 							JOptionPane.showMessageDialog(null, "포인트는 1000점 이상 사용 가능합니다.", "입력 오류",
 									JOptionPane.WARNING_MESSAGE);
 							break;
 						}
 					}
 				}
-				
+
 				try {
 					bookDB bookDB = new bookDB();
 					payDB payDB = new payDB();
 					book book = new book();
 					pay pay = new pay();
-					
+
 					// 예약
 					ArrayList array = bookDB.getbookList();
-					book.setbookNo(String.valueOf(array.size()+1));
+					book.setbookNo(String.valueOf(array.size() + 1));
 					book.setmID(member.getmID());
-					book.setTheaterID(((String)seatCombo.getSelectedItem()).substring(0, 1));
+					book.setTheaterID(((String) seatCombo.getSelectedItem()).substring(0, 1));
 					boolean torf1 = bookDB.insertbook(book);
-					
-					//결제
+
+					// 결제
 					ArrayList array2 = payDB.getpayList();
-					pay.setpayNo(String.valueOf(array2.size()+1));
-					pay.setbookNo(String.valueOf(array.size()+1));
-					member.setmticket(String.valueOf(Integer.parseInt(member.getmticket())+1)); // 구매 횟수 +1
+					pay.setpayNo(String.valueOf(array2.size() + 1));
+					pay.setbookNo(String.valueOf(array.size() + 1));
+					member.setmticket(String.valueOf(Integer.parseInt(member.getmticket()) + 1)); // 구매 횟수 +1
 					memberDB memberDB = new memberDB();
 					memberDB.updateMember(member);
 					if (!usePoint.getText().isEmpty()) {
-						pay.setprice(String.valueOf(10000-Integer.parseInt(usePoint.getText())));
-						member.setMpoint(String.valueOf(Integer.parseInt(member.getMpoint())-Integer.parseInt(usePoint.getText()))); // 포인트 차감
+						pay.setprice(String.valueOf(10000 - Integer.parseInt(usePoint.getText())));
+						member.setMpoint(String
+								.valueOf(Integer.parseInt(member.getMpoint()) - Integer.parseInt(usePoint.getText()))); // 포인트
+																														// 차감
 						boolean torf3 = memberDB.updateMember(member);
 
-						if(torf3)
-							JOptionPane.showMessageDialog(null, "포인트가 차감되었습니다.", "메세지", JOptionPane.INFORMATION_MESSAGE);
+						if (torf3)
+							JOptionPane.showMessageDialog(null, "포인트가 차감되었습니다.", "메세지",
+									JOptionPane.INFORMATION_MESSAGE);
 						else
 							JOptionPane.showMessageDialog(null, "포인트 차감을 실패하였습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
-					}
-					else {
+					} else {
 						pay.setprice("10000");
 					}
-					
+
 					memberDB.updateMember(member);
 					// 인터넷 결제 일 경우(바로 결제 및 예매 완료)
-					if(typeCombo.getSelectedItem().equals("인터넷 결제")) {
-						
+					if (typeCombo.getSelectedItem().equals("인터넷 결제")) {
+
 						pay.setpayMethod("1");
 						boolean torf2 = payDB.insertpay(pay);
-						
-						if(torf1 && torf2)
-							JOptionPane.showMessageDialog(null, "인터넷 결제가 완료되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
+
+						if (torf1 && torf2)
+							JOptionPane.showMessageDialog(null, "인터넷 결제가 완료되었습니다!", "메세지",
+									JOptionPane.INFORMATION_MESSAGE);
 						else
 							JOptionPane.showMessageDialog(null, "인터넷 결제를 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
 					}
 					// 현장 결제 일 경우(관리자 승인)
 					else {
-						
+
 						pay.setpayMethod("2");
 						boolean torf2 = payDB.insertpay(pay);
-						
-						if(torf1 && torf2)
-							JOptionPane.showMessageDialog(null, "현장 결제가 완료되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
+
+						if (torf1 && torf2)
+							JOptionPane.showMessageDialog(null, "현장 결제가 완료되었습니다!", "메세지",
+									JOptionPane.INFORMATION_MESSAGE);
 						else
 							JOptionPane.showMessageDialog(null, "현장 결제를 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
 					}
-						
+
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, "예매 또는 결제를 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
 					System.out.println(e1.toString());
