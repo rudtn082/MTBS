@@ -37,10 +37,10 @@ public class cancel_reservation extends JPanel {
 		lblNewLabel.setBounds(0, 0, 1024, 768);
 
 		bookNO = new JTextField(20);
-		bookNO.setBounds(605, 355, 200, 30);
+		bookNO.setBounds(380, 355, 200, 30);
 		bookNO.setOpaque(false);
 		bookNO.setForeground(Color.WHITE);
-		bookNO.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		bookNO.setBorder(javax.swing.BorderFactory.createLineBorder(Color.white));
 		bookNO.setCaretColor(Color.BLACK);
 
 		ok = new JButton("예약 취소");
@@ -68,7 +68,7 @@ public class cancel_reservation extends JPanel {
 	}
 
 	class MyActionListener implements ActionListener {
-		boolean isCancel= false;
+		boolean isCancel = false;
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -84,22 +84,42 @@ public class cancel_reservation extends JPanel {
 						try {
 							bookDB bookDB = new bookDB();
 							member member = ui.getmember();
+							
+							memberDB memberDB = new memberDB();
+							payDB payDB= new payDB();
 							String mID = member.getmID();
+							
+							book tmpBook = bookDB.getBook2(member.getmID());
+							pay tmpPay = payDB.getpay2(tmpBook.getbookNo());
+							int payMoney = Integer.valueOf(tmpPay.getprice());
+							
+							
+							//티켓가격을 10000원인 경우는 포인트를 이용안한거이므로 포인트를 도로 채워줄 필요가없음
+							if(payMoney == 10000) {
+								
+								memberDB.updateCancelMember(member, 0);
+							}
+							//원래가격 10000 - 구매티켓 가격 = 포인트 , 이 포인트를 복구시켜준다.
+							else if(payMoney < 10000) {
+								memberDB.updateCancelMember(member, 10000 - payMoney);
+							}
+							
 							isCancel = bookDB.deleteBook(bookNO.getText(), mID);
+							
 							if (isCancel == true) {
-								JOptionPane.showMessageDialog(null, "취소가 완료되었습니다!", "메세지",
+								JOptionPane.showMessageDialog(null, "예매취소가 완료되었습니다!", "메세지",
 										JOptionPane.INFORMATION_MESSAGE);
 							} else if (isCancel == false) {
-								JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지",
+								JOptionPane.showMessageDialog(null, "예매취소를 실패 했습니다.(예약하지 않은 영화입니다!)", "메세지",
 										JOptionPane.WARNING_MESSAGE);
 							}
 						} catch (Exception e10) {
-							JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog(null, "예매취소을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
 						}
 					}
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null, "예매취소를 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
 				}
 			case "돌아가기":
 				ui.update_UI("Main_Menu");

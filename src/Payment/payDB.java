@@ -64,6 +64,36 @@ public class payDB {
       return pay;
    }
    
+// 한 결제 정보 가져오기
+   public pay getpay2(String bookNO) {
+
+      pay pay = new pay();
+
+      Connection con = null; // 연결
+      PreparedStatement ps = null; // 명령
+      ResultSet rs = null; // 결과
+
+      try {
+         con = getConn();
+         String sql = "select * from pay where bookNO=?";
+         ps = con.prepareStatement(sql);
+         ps.setString(1, bookNO);
+
+         rs = ps.executeQuery();
+
+         if (rs.next()) {
+            pay.setpayNo(rs.getString("payNo"));
+            pay.setbookNo(rs.getString("bookNo"));
+            pay.setprice(rs.getString("price"));
+            pay.setpayMethod(rs.getString("payMethod"));
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+
+      return pay;
+   }
+   
 	// 결제 등록
 	public boolean insertpay(pay pay) {
 		Connection con = null; // 연결

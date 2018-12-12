@@ -61,6 +61,36 @@ public class bookDB {
 
 		return book;
 	}
+	
+	// 한 예약 정보 가져오기
+		public book getBook2(String mID) {
+
+			book book = new book();
+
+			Connection con = null; // 연결
+			PreparedStatement ps = null; // 명령
+			ResultSet rs = null; // 결과
+
+			try {
+				con = getConn();
+				String sql = "select * from book where mID=?";
+				ps = con.prepareStatement(sql);
+				ps.setString(1, mID);
+
+				rs = ps.executeQuery();
+
+				if (rs.next()) {
+					book.setbookNo(rs.getString("bookNo"));
+					book.setmID(rs.getString("mID"));
+					book.setTheaterID(rs.getString("theaterID"));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			return book;
+		}
+		
 
 	// 예약 등록
 	public boolean insertbook(book book) {

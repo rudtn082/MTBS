@@ -177,6 +177,35 @@ public class memberDB {
 		return true;
 	}
 
+	//예약취소시 포인트, 누적구매 티켓수 수정
+		public boolean updateCancelMember(member member , int recoveryPoint) {
+			Connection con = null;
+			PreparedStatement ps = null;
+			try {
+				con = getConn();
+				String sql = "update member set  ticket=?, point = point + ?"
+						+ "where ID=?";
+				ps = con.prepareStatement(sql);
+
+				
+				ps.setString(1, String.valueOf(Integer.valueOf(member.getmticket()) + 1));
+				ps.setString(2, String.valueOf(recoveryPoint));
+				ps.setString(3, member.getmID());
+				
+				int r = ps.executeUpdate(); // 실행 -> 수정
+				// 1~n: 성공 , 0 : 실패
+
+				if (r > 0)
+					return true;
+				else return false;
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			return true;
+		}
+	
 	// 회원 삭제
 	public boolean deleteMember(String id, String pwd) {
 		Connection con = null;
