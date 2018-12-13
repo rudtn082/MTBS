@@ -97,8 +97,8 @@ public class cinema_change extends JPanel {
 
 				// 전화번호 예외처리
 				if (!cinemaNum.getText().equals("")) {
-					if (isStringDouble(cinemaNum.getText()) == false) {
-						JOptionPane.showMessageDialog(null, "전화번호는 숫자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
+					if (isStringDouble(cinemaNum.getText()) == true) {
+						JOptionPane.showMessageDialog(null, "전화번호는 ***-****형식으로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
 						break;
 					} else {
 						if (cinemaNum.getText().length() > 9) {

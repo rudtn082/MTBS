@@ -90,23 +90,20 @@ public class cancel_reservation extends JPanel {
 							String mID = member.getmID();
 							
 							book tmpBook = bookDB.getBook2(member.getmID());
-							pay tmpPay = payDB.getpay2(tmpBook.getbookNo());
+							pay tmpPay = payDB.getpay2(bookNO.getText());
 							int payMoney = Integer.valueOf(tmpPay.getprice());
-							
-							
-							//티켓가격을 10000원인 경우는 포인트를 이용안한거이므로 포인트를 도로 채워줄 필요가없음
-							if(payMoney == 10000) {
-								
-								memberDB.updateCancelMember(member, 0);
-							}
-							//원래가격 10000 - 구매티켓 가격 = 포인트 , 이 포인트를 복구시켜준다.
-							else if(payMoney < 10000) {
-								memberDB.updateCancelMember(member, 10000 - payMoney);
-							}
 							
 							isCancel = bookDB.deleteBook(bookNO.getText(), mID);
 							
 							if (isCancel == true) {
+								//티켓가격을 10000원인 경우는 포인트를 이용안한거이므로 포인트를 도로 채워줄 필요가없음
+								if(payMoney == 10000) {
+									memberDB.updateCancelMember(member, 0);
+								}
+								//원래가격 10000 - 구매티켓 가격 = 포인트 , 이 포인트를 복구시켜준다.
+								else if(payMoney < 10000) {
+									memberDB.updateCancelMember(member, 10000 - payMoney);
+								}
 								JOptionPane.showMessageDialog(null, "예매취소가 완료되었습니다!", "메세지",
 										JOptionPane.INFORMATION_MESSAGE);
 							} else if (isCancel == false) {

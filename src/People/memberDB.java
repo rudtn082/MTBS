@@ -188,7 +188,7 @@ public class memberDB {
 				ps = con.prepareStatement(sql);
 
 				
-				ps.setString(1, String.valueOf(Integer.valueOf(member.getmticket()) + 1));
+				ps.setString(1, String.valueOf(Integer.valueOf(member.getmticket()) - 1));
 				ps.setString(2, String.valueOf(recoveryPoint));
 				ps.setString(3, member.getmID());
 				

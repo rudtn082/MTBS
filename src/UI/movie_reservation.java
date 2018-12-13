@@ -424,6 +424,7 @@ public class movie_reservation extends JPanel {
 					JOptionPane.showMessageDialog(null, "예매 또는 결제를 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
 					System.out.println(e1.toString());
 				}
+				ui.setmember(member);
 				ui.update_UI("Main_Menu");
 				break;
 			case "취소":
