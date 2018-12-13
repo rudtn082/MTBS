@@ -114,7 +114,7 @@ public class cinema_add extends JPanel {
                JOptionPane.showMessageDialog(null, "영화관 전화번호를 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
                break;
             } else {
-               if (isStringDouble(cPhoneNum.getText()) == true) {
+               if (isStringDouble(cPhoneNum.getText()) == false) {
                   JOptionPane.showMessageDialog(null, "영화관 전화번호는 숫자로 입력해주세요.", "입력 오류", JOptionPane.WARNING_MESSAGE);
                   break;
                }

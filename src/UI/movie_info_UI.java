@@ -3,6 +3,7 @@ package UI;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -11,7 +12,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import Movie.*;
+import Movie.movie;
+import Movie.movieDB;
+import Seat.Seat;
+import Seat.seatDB;
+import Theater.TheaterDB;
+import Theater.theater;
 
 public class movie_info_UI extends JPanel {
    JTextField mvID, mvTheaterID, mvMovieTitle, mvDirector, mvActor, mvGrade, mvInfo;
@@ -210,12 +216,53 @@ public class movie_info_UI extends JPanel {
                new_movie.setMvInfo(mvInfo.getText());
                new_movie.setMvAccumulateNum("0");
                movieDB movieDB = new movieDB();
-               movieDB.getConn();
-               boolean torf = movieDB.insertMovie(new_movie);
-               if(torf)
-                  JOptionPane.showMessageDialog(null, "영화가 등록 되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
-               else
-                  JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+               Vector movielist = movieDB.getMovieList();
+               
+               boolean temp = false;
+               for(int i = 0; i < movielist.size(); i++) {
+            	   if(mvMovieTitle.getText().equals(((Vector)(movielist.get(i))).get(2))) {
+            		   temp = true;
+            		   break;
+            	   }
+               }
+               
+               // 새로운 영화
+               if(!temp) {
+            	   // 상영관 추가
+            	   TheaterDB TheaterDB = new TheaterDB();
+            	   Vector theaterList = TheaterDB.getTheaterList();
+            	   theater theater = new theater();
+            	   theater.settCinemaName("Yuseong");
+            	   theater.settMovieTitle(mvMovieTitle.getText());
+            	   theater.settSeatNum("10");
+            	   theater.settStartTime("10");
+            	   theater.settTheaterID(mvTheaterID.getText());
+            	   TheaterDB.insertTheater(theater);
+            	   
+            	   // 좌석 추가
+            	   seatDB seatDB = new seatDB();
+            	   Seat Seat = new Seat();
+            	   for(int i =0; i<10; i++) {
+                	   Seat.setsSeatNum(String.valueOf(String.valueOf(theaterList.size()+1)+(i+1)));
+                	   Seat.setsTheaterID(mvTheaterID.getText());
+                	   seatDB.insertSeat(Seat);
+            	   }
+            	   
+            	   boolean torf = movieDB.insertMovie(new_movie);
+                   if(torf)
+                      JOptionPane.showMessageDialog(null, "영화가 등록 되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
+                   else
+                      JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+               }
+               else {
+            	   boolean torf = movieDB.insertMovie(new_movie);
+                   if(torf)
+                      JOptionPane.showMessageDialog(null, "영화가 등록 되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
+                   else
+                      JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+               }
+               
+               
                   
             } catch (Exception e1) {
                JOptionPane.showMessageDialog(null, "영화등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);

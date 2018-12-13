@@ -4,7 +4,7 @@ public class theater {
 	private String tTheaterID; //상영관 아이디
 	private String tCinemaName; //영화상연관 이름
 	private String tSeatNum;	//좌석 수
-	private String tMovieID;	//영화아이디
+	private String tMovieTitle;	//영화 이름
 	private String tStartTime; //상영시간
 	public String gettTheaterID() {
 		return tTheaterID;
@@ -24,11 +24,11 @@ public class theater {
 	public void settSeatNum(String tSeatNum) {
 		this.tSeatNum = tSeatNum;
 	}
-	public String gettMovieID() {
-		return tMovieID;
+	public String gettMovieTitle() {
+		return tMovieTitle;
 	}
-	public void settMovieID(String tMovieID) {
-		this.tMovieID = tMovieID;
+	public void settMovieTitle(String tMovieTitle) {
+		this.tMovieTitle = tMovieTitle;
 	}
 	public String gettStartTime() {
 		return tStartTime;
