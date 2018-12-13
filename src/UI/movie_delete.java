@@ -11,9 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import Movie.movie;
 import Movie.movieDB;
-import UI.movie_info_UI.MyActionListener;
 
 public class movie_delete extends JPanel {
 	JTextField mvID;

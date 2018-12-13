@@ -13,7 +13,6 @@ import javax.swing.JTextField;
 
 import Movie.movie;
 import Movie.movieDB;
-import UI.movie_info_UI.MyActionListener;
 
 public class movie_change extends JPanel {
 	JTextField mvID, mvMovieTitle, mvDirector, mvActor, mvGrade, mvInfo;

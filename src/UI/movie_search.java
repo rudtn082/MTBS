@@ -12,9 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Movie.movieDB;
-import People.member;
-import People.memberDB;
-import UI.VIP_manage.VIP_take;
 
 public class movie_search extends JPanel {
 	JButton movie_search, movie_reserv, logout, memberInfo, re;

@@ -20,7 +20,6 @@ import javax.swing.JTextField;
 import Booking.book;
 import Booking.bookDB;
 import Cinema.cinemaDB;
-import Movie.movie;
 import Movie.movieDB;
 import Payment.pay;
 import Payment.payDB;

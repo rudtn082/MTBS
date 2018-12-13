@@ -13,8 +13,6 @@ import javax.swing.JTextField;
 
 import Cinema.cinema;
 import Cinema.cinemaDB;
-import Movie.movie;
-import Movie.movieDB;
 
 public class cinema_add extends JPanel {
    JTextField cNAME, cAddress, cPhoneNum;
