@@ -2,11 +2,13 @@ package UI;
 
 import javax.swing.JFrame;
 
+import Cinema.cinema;
 import People.member;
 
 public class UI_Main extends JFrame {
 	Login Login = new Login(this);
 	member member = new member();
+	cinema cinema = new cinema();
 	final static int width = 1024;
 	final static int height = 800;
 
@@ -40,7 +42,8 @@ public class UI_Main extends JFrame {
 		ticket_issue ticket_issue = new ticket_issue(this);
 		check_reservation check_reservation = new check_reservation(this);
 		cancel_reservation cancel_reservation = new cancel_reservation(this);
-		switch(panelName) {
+		theater_add theater_add = new theater_add(this);
+		switch (panelName) {
 		case "Login":
 			getContentPane().removeAll();
 			getContentPane().add(Login);
@@ -161,14 +164,28 @@ public class UI_Main extends JFrame {
 			revalidate();
 			repaint();
 			break;
+		case "theater_add":
+			getContentPane().removeAll();
+			getContentPane().add(theater_add);
+			revalidate();
+			repaint();
+			break;
 		}
 	}
-	
+
 	public void setmember(member member) {
 		this.member = member;
 	}
-	
+
 	public member getmember() {
 		return member;
+	}
+	
+	public void setcinema(cinema cinema) {
+		this.cinema = cinema;
+	}
+
+	public cinema getcinema() {
+		return cinema;
 	}
 }

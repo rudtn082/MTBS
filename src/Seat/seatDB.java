@@ -94,7 +94,7 @@ public class seatDB {
    }
 
    // 좌석 등록
-   public boolean insertSeat(Seat seat) {
+   public boolean insertSeat(Seat seat, int snum) {
       Connection con = null; // 연결
       PreparedStatement ps = null; // 명령
 
@@ -102,19 +102,24 @@ public class seatDB {
          con = getConn();
          String sql = "insert into seat(sSeatNum, sTheaterID) values(?,?)";
 
-         ps = con.prepareStatement(sql);
-         ps.setString(1, seat.getsSeatNum());
-         ps.setString(2,  seat.getsTheaterID());
-        
-         int r = ps.executeUpdate(); // 실행 -> 저장
+         int r = 0;
+         for(int i = 0; i < snum; i++) {
+             ps = con.prepareStatement(sql);
+             ps.setString(1, String.valueOf(seat.getsTheaterID()+(i+1)));
+             ps.setString(2, seat.getsTheaterID());
+            
+             r = ps.executeUpdate(); // 실행 -> 저장
+             
+         }
 
          if (r > 0) {
-            System.out.println("좌석 추가 성공");
-            return true;
-         } else {
-            System.out.println("좌석 추가 실패");
-            return false;
-         }
+             System.out.println("좌석 추가 성공");
+             return true;
+          } else {
+             System.out.println("좌석 추가 실패");
+             return false;
+          }
+         
       
       } catch (Exception e) {
          e.printStackTrace();

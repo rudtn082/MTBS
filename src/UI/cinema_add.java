@@ -13,6 +13,8 @@ import javax.swing.JTextField;
 
 import Cinema.cinema;
 import Cinema.cinemaDB;
+import Theater.TheaterDB;
+import Theater.theater;
 
 public class cinema_add extends JPanel {
    JTextField cNAME, cAddress, cPhoneNum;
@@ -127,21 +129,24 @@ public class cinema_add extends JPanel {
                new_cinema.setcNAME(cNAME.getText());
                new_cinema.setcAddress(cAddress.getText());
                new_cinema.setcPhoneNum(cPhoneNum.getText());
-               
 
                cinemaDB cinemaDB = new cinemaDB();
-               cinemaDB.getConn();
                boolean torf = cinemaDB.insertCinema(new_cinema);
-               if(torf)
-                  JOptionPane.showMessageDialog(null, "영화관이 등록 되었습니다!", "메세지", JOptionPane.INFORMATION_MESSAGE);
-               else
-                  JOptionPane.showMessageDialog(null, "영화관등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+               
+               if(torf) {
+                   JOptionPane.showMessageDialog(null, "영화관이 등록 되었습니다, 상영관을 등록합니다.", "메세지", JOptionPane.INFORMATION_MESSAGE);
+                   ui.setcinema(new_cinema);
+                   ui.update_UI("theater_add");
+               }
+               else {
+                   JOptionPane.showMessageDialog(null, "영화관등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
+                   ui.update_UI("cinema_manage");
+               }
                   
             } catch (Exception e1) {
                JOptionPane.showMessageDialog(null, "영화관등록을 실패 했습니다.", "메세지", JOptionPane.WARNING_MESSAGE);
                System.out.println(e1.toString());
             }
-            ui.update_UI("cinema_manage");
             break;
          case "취소":
             ui.update_UI("cinema_manage");
